@@ -1,6 +1,8 @@
-.App {
-  text-align: center;
+App {
   position: relative;
+}
+.app-main {
+  text-align: center;
 }
 
 .App-logo {
@@ -34,16 +36,11 @@
 
 /* Tabify Logo */
 .tabify-logo {
-  font-family: 'Courier New', Courier, monospace
+  font-family: 'Courier New', Courier, monospace;
+  color: #F9D873;
 }
 
-.App h4 {
+.app-main h4 {
   text-transform: capitalize;
   font-style: italic;
-}
-
-.my-tabs-link {
-  position: absolute;
-  right: 0;
-  top: 0.5em;
 }
