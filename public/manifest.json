@@ -1,15 +1,21 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "manifest_version": 2,
+
+    "name": "Tabify Extension",
+    "description": "This extension is built with Contentful for saving important tabs",
+    "version": "0.0.1",
+
+    "browser_action": {
+      "default_popup": "index.html",
+      "default_title": "Open to save tab"
+    },
+    "icons": {
+      "16": "contentful-logo-1.png",
+      "48": "contentful-logo-1.png",
+      "128": "contentful-logo-1.png"
+    },
+    "permissions": [
+      "tabs"
+    ],
+    "content_security_policy": "script-src 'self' 'sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU='; object-src 'self'"
 }
