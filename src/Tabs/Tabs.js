@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from '@reach/router'
 import { Search, List, Label, Icon } from 'semantic-ui-react'
 import TabsList from './TabsList'
 import './Tabs.css'
@@ -9,7 +8,8 @@ class Tabs extends Component {
     super(props)
 
     this.state = {
-      entries: []
+      entries: [],
+      page: 'tabs'
     }
   }
 
@@ -19,21 +19,24 @@ class Tabs extends Component {
     })
   }
 
+  handleClick = page => ev => {
+    ev.preventDefault()
+
+    document.getElementById(page.current).style.display = 'none'
+    document.getElementById(page.next).style.display = 'block'
+  }
+
   render () {
     return (
-      <div className='Tabs'>
+      <div id="Tabs" className='Tabs'>
         <div className='tabs-header'>
           <div className='menu-links'>
-            <Link to='tabs'>
-              <Label color='black'>
-                <Icon name='add' />Save Tab
-              </Label>
-            </Link>
+            <Label color='black'>
+              <Icon name='add' />Save Tab
+            </Label>
           </div>
 
-          <Link className='home' to='/'>
-            <Icon name='home' size='large' />
-          </Link>
+          <Icon className="with-pointer" name='home' size='large' onClick={this.handleClick({current: 'Tabs', next: 'App'})} />
         </div>
 
         <div className='tabs-main'>
@@ -42,7 +45,6 @@ class Tabs extends Component {
           </center>
           <List relaxed>
             {this.state.entries.map(value => {
-              console.log(value)
               return (<TabsList key={value.sys.id} fields={value.fields} />)
             })}
 

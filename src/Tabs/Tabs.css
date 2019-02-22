@@ -1,3 +1,7 @@
+.Tabs {
+  display: none;
+}
+
 .tabs-header {
   position: relative;
   height: 5em;
@@ -6,7 +10,7 @@
 .tabs-header .home {
   position: absolute;
   left: 0.5em;
-  top: 0.6em;
+  top: 1em;
   color: #F9D873;
 }
 
@@ -27,4 +31,8 @@
 .tabs-main .tab-meta {
  color: grey !important;
  font-style: italic;
+}
+
+.with-pointer {
+  cursor: pointer;
 }
