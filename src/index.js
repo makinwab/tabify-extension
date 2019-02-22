@@ -5,12 +5,13 @@ import 'semantic-ui-css/semantic.min.css'
 import './index.css'
 import App from './App/App'
 import Tabs from './Tabs/Tabs'
+import { tabEntries } from './Helpers/contentful'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
   <Router>
     <App path='/' />
-    <Tabs path='tabs' />
+    <Tabs path='tabs' entries={tabEntries} />
   </Router>, document.getElementById('root'))
 
 // If you want your app to work offline and load faster, you can change

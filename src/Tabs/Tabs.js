@@ -1,9 +1,24 @@
 import React, { Component } from 'react'
 import { Link } from '@reach/router'
-import { Grid, Search, List, Label, Icon, Divider } from 'semantic-ui-react'
+import { Search, List, Label, Icon } from 'semantic-ui-react'
+import TabsList from './TabsList'
 import './Tabs.css'
 
 class Tabs extends Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      entries: []
+    }
+  }
+
+  componentDidMount () {
+    this.props.entries.then(result => {
+      this.setState({ entries: result.items })
+    })
+  }
+
   render () {
     return (
       <div className='Tabs'>
@@ -26,25 +41,11 @@ class Tabs extends Component {
             <Search size='big' />
           </center>
           <List relaxed>
-            <List.Item>
-              <List.Icon className='list-icon' name='linkify' size='large' verticalAlign='middle' />
+            {this.state.entries.map(value => {
+              console.log(value)
+              return (<TabsList key={value.sys.id} fields={value.fields} />)
+            })}
 
-              <List.Content>
-                <List.Header as='a'>Semantic-Org/SEmantic-UI</List.Header>
-                <List.Description className='note'>Updated 10 mins ago</List.Description>
-              </List.Content>
-            </List.Item>
-
-            <Divider />
-
-            <List.Item>
-              <List.Icon className='list-icon' name='linkify' size='large' verticalAlign='middle' />
-
-              <List.Content>
-                <List.Header as='a'>Semantic-Org/SEmantic-UI</List.Header>
-                <List.Description className='note'>Updated 10 mins ago</List.Description>
-              </List.Content>
-            </List.Item>
           </List>
         </div>
       </div>

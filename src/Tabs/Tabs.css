@@ -21,4 +21,10 @@
 
 .tabs-main .note, .tabs-main .list-icon {
   color: white !important;
+  line-height: 2em;
+}
+
+.tabs-main .tab-meta {
+ color: grey !important;
+ font-style: italic;
 }
