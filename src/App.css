@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  position: relative;
 }
 
 .App-logo {
@@ -39,4 +40,10 @@
 .App h4 {
   text-transform: capitalize;
   font-style: italic;
+}
+
+.my-tabs-link {
+  position: absolute;
+  right: 0;
+  top: 0.5em;
 }
