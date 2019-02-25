@@ -12,20 +12,31 @@ class App extends Component {
     this.state = {
       page: 'home'
     }
+
+    this.handleClick = this.handleClick.bind(this)
   }
 
-  handleClick = page => ev => {
+  handleClick (ev, page) {
     ev.preventDefault()
-  
+
     document.getElementById(page.current).style.display = 'none'
     document.getElementById(page.next).style.display = 'block'
   }
+
+  // TODO: resolve standard js issue with arrow functions
+  // handleClick = page => ev => {
+  //   ev.preventDefault()
+
+  //   document.getElementById(page.current).style.display = 'none'
+  //   document.getElementById(page.next).style.display = 'block'
+  // }
+
   render () {
     return (
       <div>
-        <div id="App" className='App'>
+        <div id='App' className='App'>
           <div className='menu-links'>
-            <Label color='black' as='a' onClick={this.handleClick({current: 'App', next: 'Tabs'})}>
+            <Label color='black' as='a' onClick={e => this.handleClick(e, { current: 'App', next: 'Tabs' })}>
               <Icon name='linkify' />My Tabs
             </Label>
           </div>
@@ -44,14 +55,14 @@ class App extends Component {
 
               <br />
 
-              <Button content='Save Tab'/>
+              <Button content='Save Tab' />
             </header>
           </div>
         </div>
         <Tabs entries={tabEntries} />
       </div>
     )
-}
+  }
 }
 
 export default App
