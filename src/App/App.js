@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Icon, Label } from 'semantic-ui-react'
 import Tabs from '../Tabs/Tabs'
-import { tabEntries } from '../Helpers/contentful'
+import SaveTab from '../Tabs/SaveTab'
 import logo from '../contentful-logo-1.png'
 import './App.css'
 
@@ -14,13 +14,17 @@ class App extends Component {
     }
 
     this.handleClick = this.handleClick.bind(this)
+    this.handleSave = this.handleSave.bind(this)
   }
 
   handleClick (ev, page) {
     ev.preventDefault()
-
     document.getElementById(page.current).style.display = 'none'
     document.getElementById(page.next).style.display = 'block'
+  }
+
+  handleSave (ev, page) {
+    this.handleClick(ev, page)
   }
 
   // TODO: resolve standard js issue with arrow functions
@@ -36,7 +40,7 @@ class App extends Component {
       <div>
         <div id='App' className='App'>
           <div className='menu-links'>
-            <Label color='black' as='a' onClick={e => this.handleClick(e, { current: 'App', next: 'Tabs' })}>
+            <Label color='black' as='a' onClick={ev => this.handleClick(ev, { current: 'App', next: 'Tabs' })}>
               <Icon name='linkify' />My Tabs
             </Label>
           </div>
@@ -55,11 +59,12 @@ class App extends Component {
 
               <br />
 
-              <Button content='Save Tab' />
+              <Button content='Save Tab' onClick={ev => this.handleSave(ev, { current: 'App', next: 'SaveTab' })} />
             </header>
           </div>
         </div>
-        <Tabs entries={tabEntries} />
+        <Tabs />
+        <SaveTab />
       </div>
     )
   }

@@ -1,3 +1,19 @@
+/* Save Tab Page */
+.save-tab {
+  display: block;
+}
+
+.save-tab-form {
+  color: #ffffff;
+  width: 90%;
+  margin: 1.5em auto 0 auto;
+}
+
+.save-tab-form {
+  text-align: center;
+}
+
+/* Tabs Page */
 .Tabs {
   display: none;
 }

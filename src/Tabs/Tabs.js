@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Search, List, Label, Icon } from 'semantic-ui-react'
 import TabsList from './TabsList'
+import { tabEntries } from '../Helpers/contentful'
 import './Tabs.css'
 
 class Tabs extends Component {
@@ -11,15 +12,17 @@ class Tabs extends Component {
       entries: [],
       page: 'tabs'
     }
+
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount () {
-    this.props.entries.then(result => {
+    tabEntries.then(result => {
       this.setState({ entries: result.items })
     })
   }
 
-  handleClick = page => ev => {
+  handleClick (ev, page) {
     ev.preventDefault()
 
     document.getElementById(page.current).style.display = 'none'
@@ -28,15 +31,15 @@ class Tabs extends Component {
 
   render () {
     return (
-      <div id="Tabs" className='Tabs'>
+      <div id='Tabs' className='Tabs'>
         <div className='tabs-header'>
           <div className='menu-links'>
-            <Label color='black'>
-              <Icon name='add' />Save Tab
+            <Label color='black' as='a' className='with-pointer' onClick={ev => this.handleClick(ev, { current: 'Tabs', next: 'SaveTab' })}>
+              <Icon name='add' /> Save Tab
             </Label>
           </div>
 
-          <Icon className="with-pointer" name='home' size='large' onClick={this.handleClick({current: 'Tabs', next: 'App'})} />
+          <Icon className='with-pointer' name='home' size='large' onClick={ev => this.handleClick(ev, { current: 'Tabs', next: 'App' })} />
         </div>
 
         <div className='tabs-main'>
@@ -47,7 +50,6 @@ class Tabs extends Component {
             {this.state.entries.map(value => {
               return (<TabsList key={value.sys.id} fields={value.fields} />)
             })}
-
           </List>
         </div>
       </div>
