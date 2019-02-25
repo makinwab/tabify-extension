@@ -44,7 +44,7 @@ class App extends Component {
 
               <br />
 
-              <Button content='Save Tab' icon='add' labelPosition='left' />
+              <Button content='Save Tab'/>
             </header>
           </div>
         </div>
