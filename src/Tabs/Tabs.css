@@ -1,6 +1,6 @@
 /* Save Tab Page */
 .save-tab {
-  display: block;
+  display: none;
 }
 
 .save-tab-form {
@@ -11,6 +11,10 @@
 
 .save-tab-form {
   text-align: center;
+}
+
+.break-text {
+  word-wrap: break-word;
 }
 
 /* Tabs Page */

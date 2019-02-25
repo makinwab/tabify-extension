@@ -1,18 +1,23 @@
 import React, { Component } from 'react'
 import { Label, Icon, Form, Message } from 'semantic-ui-react'
 import { categoryEntries } from '../Helpers/contentful'
+import { getCurrentTab } from '../Helpers/extensionUtils'
 
 class SaveTab extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      options: []
+      options: [],
+      tab: ''
     }
     this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount () {
+    getCurrentTab(tab => {
+      this.setState({ tab })
+    })
     categoryEntries.then(result => {
       let options = result.items.map((value, index) => {
         return {
@@ -33,6 +38,7 @@ class SaveTab extends Component {
   }
 
   render () {
+    console.log(this.state.tab)
     return (
       <div id='SaveTab' className='save-tab'>
         <div className='tabs-header'>
@@ -52,7 +58,7 @@ class SaveTab extends Component {
             content='Fill out the fields below for the tab' />
           <Form className='attached fluid segment'>
             <Form.Group widths='equal'>
-              <Form.Input fluid label='Tab Title' placeholder='Enter Tab Title' />
+              <Form.Input fluid label='Tab Title' placeholder='Enter Tab Title' value={this.state.tab.title} />
               <Form.Select fluid label='Tab Category' options={this.state.options} placeholder='Select Category' />
             </Form.Group>
             <Form.TextArea label='Note' placeholder='Leave a note regarding this tab...' />
@@ -60,7 +66,7 @@ class SaveTab extends Component {
           </Form>
           <Message attached='bottom'>
             <Icon name='linkify' />
-            <a href='http://www.contentful.org' target='_blank' rel='noopener noreferrer'>http://www.contentful.org</a>
+            <a className='break-text with-pointer' href={this.state.tab.url} target='_blank' rel='noopener noreferrer'>{this.state.tab.url}</a>
           </Message>
         </div>
       </div>

@@ -14,7 +14,8 @@
     "128": "contentful-logo-1.png"
   },
   "permissions": [
-    "tabs"
+    "webRequest",
+    "<all_urls>"
   ],
   "content_security_policy": "script-src 'self' 'sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU='; object-src 'self'",
   "background": {
