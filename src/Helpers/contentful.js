@@ -6,5 +6,6 @@ const client = contentful.createClient({
 })
 
 export const tabEntries = client.getEntries({ content_type: 'tab' })
+export const categoryEntries = client.getEntries({ content_type: 'category' })
 
 export default client

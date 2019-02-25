@@ -1,15 +1,29 @@
 import React, { Component } from 'react'
 import { Label, Icon, Form, Message } from 'semantic-ui-react'
-
-const options = [
-  { key: 'm', text: 'Male', value: 'male' }
-]
+import { categoryEntries } from '../Helpers/contentful'
 
 class SaveTab extends Component {
   constructor (props) {
     super(props)
 
+    this.state = {
+      options: []
+    }
     this.handleClick = this.handleClick.bind(this)
+  }
+
+  componentDidMount () {
+    categoryEntries.then(result => {
+      let options = result.items.map((value, index) => {
+        return {
+          key: value.sys.id,
+          text: value.fields.name,
+          value: value.sys.id
+        }
+      })
+
+      this.setState({ options })
+    })
   }
 
   handleClick (ev, page) {
@@ -39,7 +53,7 @@ class SaveTab extends Component {
           <Form className='attached fluid segment'>
             <Form.Group widths='equal'>
               <Form.Input fluid label='Tab Title' placeholder='Enter Tab Title' />
-              <Form.Select fluid label='Tab Category' options={options} placeholder='Select Category' />
+              <Form.Select fluid label='Tab Category' options={this.state.options} placeholder='Select Category' />
             </Form.Group>
             <Form.TextArea label='Note' placeholder='Leave a note regarding this tab...' />
             <Form.Button>Save</Form.Button>

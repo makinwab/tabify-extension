@@ -9,6 +9,7 @@ const TabsList = (props) => (
       <List.Content>
         <List.Header>
           <a href={props.fields.url} target='_blank' rel='noopener noreferrer'>{props.fields.title}</a>
+          <span className='tabs-tag'> ( #{props.fields.tag.fields.name} )</span>
         </List.Header>
         <List.Description className='note'>{props.fields.note}</List.Description>
         <List.Description className='tab-meta'>Saved at {props.fields.createdAt}</List.Description>
