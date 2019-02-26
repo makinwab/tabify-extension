@@ -56,14 +56,16 @@ class SaveTab extends Component {
             attached
             header='Ready to save tab!'
             content='Fill out the fields below for the tab' />
+
           <Form className='attached fluid segment'>
             <Form.Group widths='equal'>
-              <Form.Input fluid label='Tab Title' placeholder='Enter Tab Title' value={this.state.tab.title} />
+              <Form.Input fluid className='disabled-field' label='Tab Title' placeholder='Enter Tab Title' value={this.state.tab.title} disabled />
               <Form.Select fluid label='Tab Category' options={this.state.options} placeholder='Select Category' />
             </Form.Group>
             <Form.TextArea label='Note' placeholder='Leave a note regarding this tab...' />
             <Form.Button>Save</Form.Button>
           </Form>
+
           <Message attached='bottom'>
             <div className='truncate-text'>
               <Icon name='linkify' />
