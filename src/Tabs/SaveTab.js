@@ -20,7 +20,9 @@ class SaveTab extends Component {
       tab: '',
       category: '',
       note: '',
-      createdBy: ''
+      createdBy: '',
+      loading: false,
+      errors: {}
     }
 
     this.handleClick = this.handleClick.bind(this)
@@ -60,13 +62,13 @@ class SaveTab extends Component {
 
   handleSubmit (ev) {
     ev.preventDefault()
-    retrieveUser().then(user => this.setState({ user: user[0].sys.id }))
 
     const { note, category, tab, createdBy } = this.state
-    //title, url, note, createdAt, createdBy, tag
 
-    this.setState({ note, category })
-    console.log(this.state)
+    this.setState({ loading: true })
+    
+    retrieveUser().then(user => this.setState({ user: user[0].sys.id }))
+
     const payload = {
       title: {
         'en-US': tab.title || 'Google Home',
@@ -101,13 +103,15 @@ class SaveTab extends Component {
       fields: payload
     }))
     .then(entry => entry.publish())
-    .then(result => console.log(result))
-    .catch(console.error)
+    .then(result => this.setState({loading: false}))
+    .catch(error => {
+      this.setState({loading: false, errors: JSON.parse(error.message)})
+    })
   }
 
   render () {
-    const { note, category, tab, options } = this.state
-
+    const { note, category, tab, options, loading, errors } = this.state
+    console.log(loading)
     return (
       <div id='SaveTab' className='save-tab'>
         <div className='tabs-header'>
@@ -121,6 +125,13 @@ class SaveTab extends Component {
         </div>
 
         <div className='save-tab-form'>
+          {errors.status ? 
+            <Message
+              error
+              header={errors.message}
+              content={errors.details.errors[0].details + ' - "' + errors.details.errors[0].value + 'å"'}
+            />:''
+          }
           <Message
             attached
             header='Ready to save tab!'
@@ -131,8 +142,10 @@ class SaveTab extends Component {
               <Form.Input fluid className='disabled-field' label='Tab Title' placeholder='Enter Tab Title' value={tab.title} disabled />
               <Form.Select name='category' value={category} onChange={this.handleChange} fluid label='Tab Category' options={options} placeholder='Select Category' />
             </Form.Group>
+            
             <Form.TextArea name='note' value={note} onChange={this.handleChange} label='Note' placeholder='Leave a note regarding this tab...' />
-            <Form.Button>Save</Form.Button>
+            
+            {loading ? <Form.Button loading>Loading</Form.Button> :  <Form.Button>Save</Form.Button>}
           </Form>
 
           <Message attached='bottom'>
