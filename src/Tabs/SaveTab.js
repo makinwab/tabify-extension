@@ -3,7 +3,7 @@ import { Label, Icon, Form, Message } from 'semantic-ui-react'
 import { categoryEntries } from '../Helpers/contentful'
 import { getCurrentTab } from '../Helpers/extensionUtils'
 import {environment as contentfulClient} from '../Helpers/contentful'
-import { user } from '../Helpers/contentful'
+import client, { user } from '../Helpers/contentful'
 
 const localStorage = window.localStorage
 
@@ -56,7 +56,6 @@ class SaveTab extends Component {
   }
 
   handleChange = (ev, { name, value }) => {
-    console.log(name, value)
     this.setState({ [name]: value })
   }
 
@@ -66,6 +65,11 @@ class SaveTab extends Component {
     const { note, category, tab, createdBy } = this.state
 
     this.setState({ loading: true })
+
+    // TODO validation for if user has saved tab previously
+    // client.CDAClient.getEntry('tab')
+    // .then(console.log)
+    // .catch(console.error)
     
     retrieveUser().then(user => this.setState({ user: user[0].sys.id }))
 
@@ -111,7 +115,7 @@ class SaveTab extends Component {
 
   render () {
     const { note, category, tab, options, loading, errors } = this.state
-    console.log(loading)
+
     return (
       <div id='SaveTab' className='save-tab'>
         <div className='tabs-header'>
