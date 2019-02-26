@@ -19,7 +19,6 @@ class Tabs extends Component {
   componentDidMount () {
     tabEntries.then(result => {
       const filteredResult = result.items.filter(value => {
-        console.log(value.fields.createdBy.sys.id)
         return value.fields.createdBy.fields.email === window.localStorage.getItem('user')
       })
 

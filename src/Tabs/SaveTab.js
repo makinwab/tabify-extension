@@ -3,7 +3,7 @@ import { Label, Icon, Form, Message } from 'semantic-ui-react'
 import { categoryEntries } from '../Helpers/contentful'
 import { getCurrentTab } from '../Helpers/extensionUtils'
 import {environment as contentfulClient} from '../Helpers/contentful'
-import client, { user } from '../Helpers/contentful'
+import { user } from '../Helpers/contentful'
 
 const localStorage = window.localStorage
 
@@ -24,9 +24,6 @@ class SaveTab extends Component {
       loading: false,
       errors: {}
     }
-
-    this.handleClick = this.handleClick.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount () {
@@ -49,7 +46,7 @@ class SaveTab extends Component {
     })
   }
 
-  handleClick (ev, page) {
+  handleClick = ev => page => {
     ev.preventDefault()
     document.getElementById(page.current).style.display = 'none'
     document.getElementById(page.next).style.display = 'block'
@@ -59,7 +56,7 @@ class SaveTab extends Component {
     this.setState({ [name]: value })
   }
 
-  handleSubmit (ev) {
+  handleSubmit = ev => {
     ev.preventDefault()
 
     const { note, category, tab, createdBy } = this.state
@@ -120,12 +117,12 @@ class SaveTab extends Component {
       <div id='SaveTab' className='save-tab'>
         <div className='tabs-header'>
           <div className='menu-links'>
-            <Label color='black' as='a' onClick={ev => this.handleClick(ev, { current: 'SaveTab', next: 'Tabs' })}>
+            <Label color='black' as='a' onClick={this.handleClick({ current: 'SaveTab', next: 'Tabs' })}>
               <Icon name='linkify' />My Tabs
             </Label>
           </div>
 
-          <Icon className='with-pointer' name='home' size='large' onClick={ev => this.handleClick(ev, { current: 'Tabs', next: 'App' })} />
+          <Icon className='with-pointer' name='home' size='large' onClick={this.handleClick({ current: 'Tabs', next: 'App' })} />
         </div>
 
         <div className='save-tab-form'>
@@ -141,7 +138,7 @@ class SaveTab extends Component {
             header='Ready to save tab!'
             content='Fill out the fields below for the tab' />
 
-          <Form className='attached fluid segment' onSubmit={ev => this.handleSubmit(ev)}>
+          <Form className='attached fluid segment' onSubmit={this.handleSubmit}>
             <Form.Group widths='equal'>
               <Form.Input fluid className='disabled-field' label='Tab Title' placeholder='Enter Tab Title' value={tab.title} disabled />
               <Form.Select name='category' value={category} onChange={this.handleChange} fluid label='Tab Category' options={options} placeholder='Select Category' />
