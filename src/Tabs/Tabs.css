@@ -13,9 +13,13 @@
   text-align: center;
 }
 
-.break-text {
-  word-wrap: break-word;
+div.truncate-text {
+  overflow: hidden;
+    text-overflow: ellipsis;
+    width: 17em;
+    margin: 0 auto;
 }
+
 
 /* Tabs Page */
 .Tabs {

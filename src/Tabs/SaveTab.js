@@ -65,8 +65,10 @@ class SaveTab extends Component {
             <Form.Button>Save</Form.Button>
           </Form>
           <Message attached='bottom'>
-            <Icon name='linkify' />
-            <a className='break-text with-pointer' href={this.state.tab.url} target='_blank' rel='noopener noreferrer'>{this.state.tab.url}</a>
+            <div className='truncate-text'>
+              <Icon name='linkify' />
+              <a className='with-pointer' href={this.state.tab.url} target='_blank' rel='noopener noreferrer'>{this.state.tab.url}</a>
+            </div>
           </Message>
         </div>
       </div>
