@@ -2,6 +2,14 @@ import React, { Component } from 'react'
 import { Label, Icon, Form, Message } from 'semantic-ui-react'
 import { categoryEntries } from '../Helpers/contentful'
 import { getCurrentTab } from '../Helpers/extensionUtils'
+import {environment as contentfulClient} from '../Helpers/contentful'
+import { user } from '../Helpers/contentful'
+
+const localStorage = window.localStorage
+
+const retrieveUser = () => {
+  return user.then(entry => entry.items.filter(value => value.fields.email === localStorage.getItem('user')))
+}
 
 class SaveTab extends Component {
   constructor (props) {
@@ -9,15 +17,23 @@ class SaveTab extends Component {
 
     this.state = {
       options: [],
-      tab: ''
+      tab: '',
+      category: '',
+      note: '',
+      createdBy: ''
     }
+
     this.handleClick = this.handleClick.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount () {
     getCurrentTab(tab => {
       this.setState({ tab })
     })
+
+    retrieveUser().then(user => this.setState({ createdBy: user[0].sys.id }))
+
     categoryEntries.then(result => {
       let options = result.items.map((value, index) => {
         return {
@@ -37,8 +53,61 @@ class SaveTab extends Component {
     document.getElementById(page.next).style.display = 'block'
   }
 
+  handleChange = (ev, { name, value }) => {
+    console.log(name, value)
+    this.setState({ [name]: value })
+  }
+
+  handleSubmit (ev) {
+    ev.preventDefault()
+    retrieveUser().then(user => this.setState({ user: user[0].sys.id }))
+
+    const { note, category, tab, createdBy } = this.state
+    //title, url, note, createdAt, createdBy, tag
+
+    this.setState({ note, category })
+    console.log(this.state)
+    const payload = {
+      title: {
+        'en-US': tab.title || 'Google Home',
+      },
+      note: {
+        'en-US': note
+      },
+      url: {
+        'en-US': tab.url || 'http://google.com'
+      },
+      tag: {
+        'en-US': {
+          sys: {
+            type: 'Link',
+            linkType: 'Entry',
+            id: category
+          }
+        }
+      },
+      createdBy: {
+        'en-US': {
+          sys: {
+            type: 'Link',
+            linkType: 'Entry',
+            id: createdBy
+          }
+        }
+      }
+    }
+
+    contentfulClient.then(environment => environment.createEntry('tab', {
+      fields: payload
+    }))
+    .then(entry => entry.publish())
+    .then(result => console.log(result))
+    .catch(console.error)
+  }
+
   render () {
-    console.log(this.state.tab)
+    const { note, category, tab, options } = this.state
+
     return (
       <div id='SaveTab' className='save-tab'>
         <div className='tabs-header'>
@@ -57,19 +126,19 @@ class SaveTab extends Component {
             header='Ready to save tab!'
             content='Fill out the fields below for the tab' />
 
-          <Form className='attached fluid segment'>
+          <Form className='attached fluid segment' onSubmit={ev => this.handleSubmit(ev)}>
             <Form.Group widths='equal'>
-              <Form.Input fluid className='disabled-field' label='Tab Title' placeholder='Enter Tab Title' value={this.state.tab.title} disabled />
-              <Form.Select fluid label='Tab Category' options={this.state.options} placeholder='Select Category' />
+              <Form.Input fluid className='disabled-field' label='Tab Title' placeholder='Enter Tab Title' value={tab.title} disabled />
+              <Form.Select name='category' value={category} onChange={this.handleChange} fluid label='Tab Category' options={options} placeholder='Select Category' />
             </Form.Group>
-            <Form.TextArea label='Note' placeholder='Leave a note regarding this tab...' />
+            <Form.TextArea name='note' value={note} onChange={this.handleChange} label='Note' placeholder='Leave a note regarding this tab...' />
             <Form.Button>Save</Form.Button>
           </Form>
 
           <Message attached='bottom'>
             <div className='truncate-text'>
               <Icon name='linkify' />
-              <a className='with-pointer' href={this.state.tab.url} target='_blank' rel='noopener noreferrer'>{this.state.tab.url}</a>
+              <a className='with-pointer' href={tab.url} target='_blank' rel='noopener noreferrer'>{tab.url}</a>
             </div>
           </Message>
         </div>

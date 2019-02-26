@@ -48,7 +48,7 @@ class Tabs extends Component {
           </center>
           <List relaxed>
             {this.state.entries.map(value => {
-              return (<TabsList key={value.sys.id} fields={value.fields} />)
+              return (<TabsList key={value.sys.id} createdAt={value.sys.createdAt} fields={value.fields} />)
             })}
           </List>
         </div>

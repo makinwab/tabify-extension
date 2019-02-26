@@ -1,11 +1,24 @@
-const contentful = require('contentful')
+const CDA = require('contentful')
+const CMA = require('contentful-management')
 
-const client = contentful.createClient({
+const CDAClient = CDA.createClient({
   space: process.env.REACT_APP_SPACE_ID,
   accessToken: process.env.REACT_APP_ACCESS_TOKEN
 })
 
-export const tabEntries = client.getEntries({ content_type: 'tab' })
-export const categoryEntries = client.getEntries({ content_type: 'category' })
+const CMAClient = CMA.createClient({
+  accessToken: process.env.REACT_APP_CMA_ACCESS_TOKEN
+})
 
-export default client
+export const environment = CMAClient.getSpace(process.env.REACT_APP_SPACE_ID)
+  .then(space => space.getEnvironment('master'))
+
+// TODO: get email from user on authentication
+let localStorage = window.localStorage
+localStorage.setItem('user', 'makinwa37@gmail.com')
+
+export const user = CDAClient.getEntries({ content_type: 'user' })
+export const tabEntries = CDAClient.getEntries({ content_type: 'tab' })
+export const categoryEntries = CDAClient.getEntries({ content_type: 'category' })
+
+export default { CDAClient, CMAClient }

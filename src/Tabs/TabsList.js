@@ -12,7 +12,7 @@ const TabsList = (props) => (
           <span className='tabs-tag'> ( #{props.fields.tag.fields.name} )</span>
         </List.Header>
         <List.Description className='note'>{props.fields.note}</List.Description>
-        <List.Description className='tab-meta'>Saved at {props.fields.createdAt}</List.Description>
+        <List.Description className='tab-meta'>Saved at {props.createdAt}</List.Description>
       </List.Content>
     </List.Item>
 
