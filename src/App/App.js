@@ -29,8 +29,8 @@ class App extends Component {
     this.updateUserData()
   }
 
-  getFilteredEntries () {
-    return getEntries({ content_type: 'tab' }).then(result => {
+  async getFilteredEntries () {
+    return getEntries({ content_type: 'tab', order: '-sys.createdAt' }).then(result => {
       const filteredResult = result.items.filter(value => {
         return value.fields.createdBy.fields.email === window.localStorage.getItem('user')
       })
