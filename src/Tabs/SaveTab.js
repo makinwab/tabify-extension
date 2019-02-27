@@ -46,7 +46,8 @@ class SaveTab extends Component {
     })
   }
 
-  handleClick = ev => page => {
+  handleClick = page => ev => {
+    
     ev.preventDefault()
     document.getElementById(page.current).style.display = 'none'
     document.getElementById(page.next).style.display = 'block'
