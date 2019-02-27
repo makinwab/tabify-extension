@@ -25,7 +25,8 @@ class SaveTab extends Component {
       note: '',
       createdBy: '',
       loading: false,
-      errors: {}
+      errors: {},
+      success: null
     }
   }
 
@@ -74,7 +75,7 @@ class SaveTab extends Component {
 
     const payload = {
       title: {
-        'en-US': tab.title || 'Abc',
+        'en-US': tab.title || 'Test Success',
       },
       note: {
         'en-US': note
@@ -106,14 +107,14 @@ class SaveTab extends Component {
       fields: payload
     }))
     .then(entry => entry.publish())
-    .then(result => this.setState({loading: false}))
+    .then(result => this.setState({loading: false, success: true}))
     .catch(error => {
       this.setState({loading: false, errors: JSON.parse(error.message)})
     })
   }
 
   render () {
-    const { page, note, category, tab, options, loading, errors } = this.state
+    const { page, note, category, tab, options, loading, errors, success } = this.state
   
     return (
       <React.Fragment>
@@ -136,6 +137,13 @@ class SaveTab extends Component {
                 header={errors.message}
                 content={errors.details.errors[0].details + ' - "' + errors.details.errors[0].value + 'å"'}
               />:''
+            }
+            {success ?
+              <Message
+                success
+                header='Tab Saved 🎉'
+                content="You've successfully saved a tab" />
+              : ''
             }
             <Message
               attached
