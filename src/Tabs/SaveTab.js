@@ -4,6 +4,8 @@ import { categoryEntries } from '../Helpers/contentful'
 import { getCurrentTab } from '../Helpers/extensionUtils'
 import {environment as contentfulClient} from '../Helpers/contentful'
 import { user } from '../Helpers/contentful'
+import Tabs from '../Tabs/Tabs'
+import App from '../App/App'
 
 const localStorage = window.localStorage
 
@@ -16,6 +18,7 @@ class SaveTab extends Component {
     super(props)
 
     this.state = {
+      page: 'SaveTab',
       options: [],
       tab: '',
       category: '',
@@ -47,10 +50,8 @@ class SaveTab extends Component {
   }
 
   handleClick = page => ev => {
-    
     ev.preventDefault()
-    document.getElementById(page.current).style.display = 'none'
-    document.getElementById(page.next).style.display = 'block'
+    this.setState({ page: page.next })
   }
 
   handleChange = (ev, { name, value }) => {
@@ -73,13 +74,13 @@ class SaveTab extends Component {
 
     const payload = {
       title: {
-        'en-US': tab.title || 'Google Home',
+        'en-US': tab.title || 'Abc',
       },
       note: {
         'en-US': note
       },
       url: {
-        'en-US': tab.url || 'http://google.com'
+        'en-US': tab.url || 'http://abc.com'
       },
       tag: {
         'en-US': {
@@ -112,52 +113,59 @@ class SaveTab extends Component {
   }
 
   render () {
-    const { note, category, tab, options, loading, errors } = this.state
-
+    const { page, note, category, tab, options, loading, errors } = this.state
+  
     return (
-      <div id='SaveTab' className='save-tab'>
-        <div className='tabs-header'>
-          <div className='menu-links'>
-            <Label color='black' as='a' onClick={this.handleClick({ current: 'SaveTab', next: 'Tabs' })}>
-              <Icon name='linkify' />My Tabs
-            </Label>
+      <React.Fragment>
+        {(page === 'SaveTab') ? 
+        <div id='SaveTab' className='save-tab'>
+          <div className='tabs-header'>
+            <div className='menu-links'>
+              <Label color='black' as='a' onClick={this.handleClick({ current: 'SaveTab', next: 'Tabs' })}>
+                <Icon name='linkify' />My Tabs
+              </Label>
+            </div>
+
+            <Icon className='with-pointer' name='home' size='large' onClick={this.handleClick({ current: 'Tabs', next: 'App' })} />
           </div>
 
-          <Icon className='with-pointer' name='home' size='large' onClick={this.handleClick({ current: 'Tabs', next: 'App' })} />
-        </div>
-
-        <div className='save-tab-form'>
-          {errors.status ? 
+          <div className='save-tab-form'>
+            {errors.status ? 
+              <Message
+                error
+                header={errors.message}
+                content={errors.details.errors[0].details + ' - "' + errors.details.errors[0].value + 'å"'}
+              />:''
+            }
             <Message
-              error
-              header={errors.message}
-              content={errors.details.errors[0].details + ' - "' + errors.details.errors[0].value + 'å"'}
-            />:''
-          }
-          <Message
-            attached
-            header='Ready to save tab!'
-            content='Fill out the fields below for the tab' />
+              attached
+              header='Ready to save tab!'
+              content='Fill out the fields below for the tab' />
 
-          <Form className='attached fluid segment' onSubmit={this.handleSubmit}>
-            <Form.Group widths='equal'>
-              <Form.Input fluid className='disabled-field' label='Tab Title' placeholder='Enter Tab Title' value={tab.title} disabled />
-              <Form.Select name='category' value={category} onChange={this.handleChange} fluid label='Tab Category' options={options} placeholder='Select Category' />
-            </Form.Group>
-            
-            <Form.TextArea name='note' value={note} onChange={this.handleChange} label='Note' placeholder='Leave a note regarding this tab...' />
-            
-            {loading ? <Form.Button loading>Loading</Form.Button> :  <Form.Button>Save</Form.Button>}
-          </Form>
+            <Form className='attached fluid segment' onSubmit={this.handleSubmit}>
+              <Form.Group widths='equal'>
+                <Form.Input fluid className='disabled-field' label='Tab Title' placeholder='Enter Tab Title' value={tab.title} disabled />
+                <Form.Select name='category' value={category} onChange={this.handleChange} fluid label='Tab Category' options={options} placeholder='Select Category' />
+              </Form.Group>
+              
+              <Form.TextArea name='note' value={note} onChange={this.handleChange} label='Note' placeholder='Leave a note regarding this tab...' />
+              
+              {loading ? <Form.Button loading>Loading</Form.Button> :  <Form.Button>Save</Form.Button>}
+            </Form>
 
-          <Message attached='bottom'>
-            <div className='truncate-text'>
-              <Icon name='linkify' />
-              <a className='with-pointer' href={tab.url} target='_blank' rel='noopener noreferrer'>{tab.url}</a>
-            </div>
-          </Message>
+            <Message attached='bottom'>
+              <div className='truncate-text'>
+                <Icon name='linkify' />
+                <a className='with-pointer' href={tab.url} target='_blank' rel='noopener noreferrer'>{tab.url}</a>
+              </div>
+            </Message>
+          </div>
         </div>
-      </div>
+        : (page === 'App') ? <App />
+          : (page === 'Tabs') ? <Tabs updateTabEntries={this.props.updateTabEntries} />
+            :''
+        }
+      </React.Fragment>
     )
   }
 }

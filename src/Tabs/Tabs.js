@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Search, List, Label, Icon } from 'semantic-ui-react'
 import TabsList from './TabsList'
-import { tabEntries } from '../Helpers/contentful'
+import SaveTab from './SaveTab'
+import App from '../App/App'
+
 import './Tabs.css'
 
 class Tabs extends Component {
@@ -10,53 +12,60 @@ class Tabs extends Component {
 
     this.state = {
       entries: [],
-      page: 'tabs'
+      page: 'Tabs'
     }
 
     this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount () {
-    tabEntries.then(result => {
-      const filteredResult = result.items.filter(value => {
-        return value.fields.createdBy.fields.email === window.localStorage.getItem('user')
-      })
+    this.invokeTabEntries()
+  }
 
-      this.setState({ entries: filteredResult })
+  invokeTabEntries () {
+    this.props.updateTabEntries().then(result => {
+      this.setState({ entries: result })
     })
   }
 
   handleClick (ev, page) {
     ev.preventDefault()
-
-    document.getElementById(page.current).style.display = 'none'
-    document.getElementById(page.next).style.display = 'block'
+    this.setState({ page: page.next })
   }
 
   render () {
+    const { page } = this.state
     return (
-      <div id='Tabs' className='Tabs'>
-        <div className='tabs-header'>
-          <div className='menu-links'>
-            <Label color='black' as='a' className='with-pointer' onClick={ev => this.handleClick(ev, { current: 'Tabs', next: 'SaveTab' })}>
-              <Icon name='add' /> Save Tab
-            </Label>
+      <React.Fragment>
+        {(page === 'Tabs') ? <div id='Tabs' className='Tabs'>
+          <div className='tabs-header'>
+            <div className='menu-links'>
+              <Label color='black' as='a' className='with-pointer' onClick={ev => this.handleClick(ev, { current: 'Tabs', next: 'SaveTab' })}>
+                <Icon name='add' /> Save Tab
+              </Label>
+            </div>
+
+            <Icon className='with-pointer' name='home' size='large' onClick={ev => this.handleClick(ev, { current: 'Tabs', next: 'App' })} />
           </div>
 
-          <Icon className='with-pointer' name='home' size='large' onClick={ev => this.handleClick(ev, { current: 'Tabs', next: 'App' })} />
+          <div className='tabs-main'>
+            <center className='search-box'>
+              <Search size='big' />
+            </center>
+            <List relaxed>
+              {this.state.entries.map(value => {
+                return (<TabsList key={value.sys.id} createdAt={value.sys.createdAt} fields={value.fields} />)
+              })}
+            </List>
+          </div>
         </div>
-
-        <div className='tabs-main'>
-          <center className='search-box'>
-            <Search size='big' />
-          </center>
-          <List relaxed>
-            {this.state.entries.map(value => {
-              return (<TabsList key={value.sys.id} createdAt={value.sys.createdAt} fields={value.fields} />)
-            })}
-          </List>
-        </div>
-      </div>
+          : (page === 'SaveTab')
+            ? <SaveTab updateTabEntries={this.props.updateTabEntries} user={this.props.user} />
+            : (page === 'App')
+              ? <App />
+              : ''
+        }
+      </React.Fragment>
     )
   }
 }

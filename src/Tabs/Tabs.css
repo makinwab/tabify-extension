@@ -1,8 +1,4 @@
 /* Save Tab Page */
-.save-tab {
-  display: none;
-}
-
 .save-tab-form {
   color: #ffffff;
   width: 90%;
@@ -26,10 +22,6 @@ div.truncate-text {
 
 
 /* Tabs Page */
-.Tabs {
-  display: none;
-}
-
 .tabs-header {
   position: relative;
   height: 5em;

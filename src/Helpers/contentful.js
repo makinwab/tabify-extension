@@ -18,7 +18,7 @@ let localStorage = window.localStorage
 localStorage.setItem('user', 'makinwa37@gmail.com')
 
 export const user = CDAClient.getEntries({ content_type: 'user' })
-export const tabEntries = CDAClient.getEntries({ content_type: 'tab' })
+export const getEntries = CDAClient.getEntries
 export const categoryEntries = CDAClient.getEntries({ content_type: 'category' })
 
 export default { CDAClient, CMAClient }
