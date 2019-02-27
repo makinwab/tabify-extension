@@ -50,14 +50,12 @@ class SaveTab extends Component {
     })
   }
 
-  
-
-  handleClick = page => ev => {
+  handlePageChange = page => ev => {
     ev.preventDefault()
     this.setState({ page: page.next })
   }
 
-  handleChange = (ev, { name, value }) => {
+  handleFormChange = (ev, { name, value }) => {
     this.setState({ [name]: value })
   }
 
@@ -69,14 +67,11 @@ class SaveTab extends Component {
     this.setState({ loading: true })
 
     if (!category) {
-      this.setState({
-        loading: false,
-        error: {
-          status: 422,
-          message: 'Category is missing',
-          details: "Please select a category",
-          value: '👇🏽'
-        }
+      this.handleError({
+        status: 422,
+        message: 'Category is missing',
+        details: "Please select a category",
+        value: '👇🏽'
       })
       return
     }
@@ -84,14 +79,11 @@ class SaveTab extends Component {
     this.validateTab(tab.url || tab.href)
     .then(result => {
       if (result) {
-        this.setState({
-          loading: false,
-          error: {
-            status: 422,
-            message: 'Tab already exists',
-            details: "You've previously saved this tab",
-            value: tab.url || tab.href
-          }
+        this.handleError({
+          status: 422,
+          message: 'Tab already exists',
+          details: "You've previously saved this tab",
+          value: tab.url || tab.href
         })
         return
       }
@@ -110,12 +102,12 @@ class SaveTab extends Component {
         <div id='SaveTab' className='save-tab'>
           <div className='tabs-header'>
             <div className='menu-links'>
-              <Label color='black' as='a' onClick={this.handleClick({ current: 'SaveTab', next: 'Tabs' })}>
+              <Label color='black' as='a' onClick={this.handlePageChange({ current: 'SaveTab', next: 'Tabs' })}>
                 <Icon name='linkify' />My Tabs
               </Label>
             </div>
 
-            <Icon className='with-pointer' name='home' size='large' onClick={this.handleClick({ current: 'Tabs', next: 'App' })} />
+            <Icon className='with-pointer' name='home' size='large' onClick={this.handlePageChange({ current: 'Tabs', next: 'App' })} />
           </div>
 
           <div className='save-tab-form'>
@@ -141,10 +133,10 @@ class SaveTab extends Component {
             <Form className='attached fluid segment' onSubmit={this.handleSubmit}>
               <Form.Group widths='equal'>
                 <Form.Input fluid className='disabled-field' label='Tab Title' placeholder='Enter Tab Title' value={tab.title} disabled />
-                <Form.Select name='category' value={category} onChange={this.handleChange} fluid label='Tab Category' options={options} placeholder='Select Category' />
+                <Form.Select name='category' value={category} onChange={this.handleFormChange} fluid label='Tab Category' options={options} placeholder='Select Category' />
               </Form.Group>
               
-              <Form.TextArea name='note' value={note} onChange={this.handleChange} label='Note' placeholder='Leave a note regarding this tab...' />
+              <Form.TextArea name='note' value={note} onChange={this.handleFormChange} label='Note' placeholder='Leave a note regarding this tab...' />
               
               {loading ? <Form.Button loading>Loading</Form.Button> :  <Form.Button>Save</Form.Button>}
             </Form>
@@ -163,6 +155,15 @@ class SaveTab extends Component {
         }
       </React.Fragment>
     )
+  }
+
+  handleError (error) {
+    this.setState({
+      loading: false,
+      error
+    })
+
+    setTimeout(() => this.setState({error: {}}), 5000)
   }
 
   validateTab (tabUrl) {

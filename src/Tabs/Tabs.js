@@ -15,7 +15,7 @@ class Tabs extends Component {
       page: 'Tabs'
     }
 
-    this.handleClick = this.handleClick.bind(this)
+    this.handlePageChange = this.handlePageChange.bind(this)
   }
 
   componentDidMount () {
@@ -28,7 +28,7 @@ class Tabs extends Component {
     })
   }
 
-  handleClick (ev, page) {
+  handlePageChange (ev, page) {
     ev.preventDefault()
     this.setState({ page: page.next })
   }
@@ -40,12 +40,12 @@ class Tabs extends Component {
         {(page === 'Tabs') ? <div id='Tabs' className='Tabs'>
           <div className='tabs-header'>
             <div className='menu-links'>
-              <Label color='black' as='a' className='with-pointer' onClick={ev => this.handleClick(ev, { current: 'Tabs', next: 'SaveTab' })}>
+              <Label color='black' as='a' className='with-pointer' onClick={ev => this.handlePageChange(ev, { current: 'Tabs', next: 'SaveTab' })}>
                 <Icon name='add' /> Save Tab
               </Label>
             </div>
 
-            <Icon className='with-pointer' name='home' size='large' onClick={ev => this.handleClick(ev, { current: 'Tabs', next: 'App' })} />
+            <Icon className='with-pointer' name='home' size='large' onClick={ev => this.handlePageChange(ev, { current: 'Tabs', next: 'App' })} />
           </div>
 
           <div className='tabs-main'>

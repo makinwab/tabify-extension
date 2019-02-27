@@ -21,7 +21,7 @@ class App extends Component {
       user: ''
     }
 
-    this.handleClick = this.handleClick.bind(this)
+    this.handlePageChange = this.handlePageChange.bind(this)
     this.handleSave = this.handleSave.bind(this)
   }
 
@@ -43,13 +43,13 @@ class App extends Component {
     retrieveUser().then(user => this.setState({ user: user[0].sys.id }))
   }
 
-  handleClick (ev, page) {
+  handlePageChange (ev, page) {
     ev.preventDefault()
     this.setState({ page: page.next })
   }
 
   handleSave (ev, page) {
-    this.handleClick(ev, page)
+    this.handlePageChange(ev, page)
   }
 
   render () {
@@ -60,7 +60,7 @@ class App extends Component {
         {(page === 'App')
           ? <div id='App' className='App'>
             <div className='menu-links'>
-              <Label color='black' as='a' onClick={ev => this.handleClick(ev, { current: 'App', next: 'Tabs' })}>
+              <Label color='black' as='a' onClick={ev => this.handlePageChange(ev, { current: 'App', next: 'Tabs' })}>
                 <Icon name='linkify' />My Tabs
               </Label>
             </div>
