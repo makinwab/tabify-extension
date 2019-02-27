@@ -25,7 +25,7 @@ class SaveTab extends Component {
       note: '',
       createdBy: '',
       loading: false,
-      error: {},
+      error: null,
       success: null
     }
   }
@@ -67,24 +67,24 @@ class SaveTab extends Component {
     this.setState({ loading: true })
 
     if (!category) {
-      this.handleError({
-        status: 422,
+      this.handleFeedbackState({
         message: 'Category is missing',
         details: "Please select a category",
         value: '👇🏽'
-      })
+      }, 'error')
+
       return
     }
 
     this.validateTab(tab.url || tab.href)
     .then(result => {
       if (result) {
-        this.handleError({
-          status: 422,
+        this.handleFeedbackState({
           message: 'Tab already exists',
           details: "You've previously saved this tab",
           value: tab.url || tab.href
-        })
+        }, 'error')
+
         return
       }
 
@@ -111,7 +111,7 @@ class SaveTab extends Component {
           </div>
 
           <div className='save-tab-form'>
-            {error.status ? 
+            {error ? 
               <Message
                 error
                 header={error.message}
@@ -157,13 +157,13 @@ class SaveTab extends Component {
     )
   }
 
-  handleError (error) {
+  handleFeedbackState (feedback, type) {
     this.setState({
       loading: false,
-      error
+      [type]: feedback
     })
 
-    setTimeout(() => this.setState({error: {}}), 5000)
+    setTimeout(() => this.setState({[type]: null}), 5000)
   }
 
   validateTab (tabUrl) {
@@ -209,19 +209,17 @@ class SaveTab extends Component {
       fields: payload
     }))
     .then(entry => entry.publish())
-    .then(result => this.setState({loading: false, success: true}))
+    .then(this.handleFeedbackState(true, 'success'))
     .catch(e => {
       let error = JSON.parse(e.message)
 
-      this.setState({
-        loading: false,
-        error: {
-          status: error.message.status,
-          message: error.message.message,
-          details: error.message.details.errors[0].details,
-          value: error.message.details.errors[0].value
-        }
-      })
+      this.handleFeedbackState({
+        message: error.message.message,
+        details: error.message.details.errors[0].details,
+        value: error.message.details.errors[0].value
+      }, 'error')
+
+      return
     })
   }
 }
