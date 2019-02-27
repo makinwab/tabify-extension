@@ -29,7 +29,7 @@ class App extends Component {
     this.updateUserData()
   }
 
-  updateTabEntries () {
+  getFilteredEntries () {
     return getEntries({ content_type: 'tab' }).then(result => {
       const filteredResult = result.items.filter(value => {
         return value.fields.createdBy.fields.email === window.localStorage.getItem('user')
@@ -83,8 +83,8 @@ class App extends Component {
               </header>
             </div>
           </div>
-          : (page === 'Tabs') ? <Tabs updateTabEntries={this.updateTabEntries} user={user} />
-            : (page === 'SaveTab') ? <SaveTab updateTabEntries={this.updateTabEntries} user={user} /> : ''
+          : (page === 'Tabs') ? <Tabs getFilteredEntries={this.getFilteredEntries} user={user} />
+            : (page === 'SaveTab') ? <SaveTab getFilteredEntries={this.getFilteredEntries} user={user} /> : ''
         }
       </div>
     )

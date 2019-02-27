@@ -20,12 +20,12 @@ class SaveTab extends Component {
     this.state = {
       page: 'SaveTab',
       options: [],
-      tab: '',
+      tab: {url: 'http://abc.com'},
       category: '',
       note: '',
       createdBy: '',
       loading: false,
-      errors: {},
+      error: {},
       success: null
     }
   }
@@ -50,6 +50,8 @@ class SaveTab extends Component {
     })
   }
 
+  
+
   handleClick = page => ev => {
     ev.preventDefault()
     this.setState({ page: page.next })
@@ -62,59 +64,45 @@ class SaveTab extends Component {
   handleSubmit = ev => {
     ev.preventDefault()
 
-    const { note, category, tab, createdBy } = this.state
+    const { category, tab } = this.state
 
     this.setState({ loading: true })
 
-    // TODO validation for if user has saved tab previously
-    // client.CDAClient.getEntry('tab')
-    // .then(console.log)
-    // .catch(console.error)
-    
-    retrieveUser().then(user => this.setState({ user: user[0].sys.id }))
-
-    const payload = {
-      title: {
-        'en-US': tab.title || 'Test Success',
-      },
-      note: {
-        'en-US': note
-      },
-      url: {
-        'en-US': tab.url || 'http://abc.com'
-      },
-      tag: {
-        'en-US': {
-          sys: {
-            type: 'Link',
-            linkType: 'Entry',
-            id: category
-          }
+    if (!category) {
+      this.setState({
+        loading: false,
+        error: {
+          status: 422,
+          message: 'Category is missing',
+          details: "Please select a category",
+          value: '👇🏽'
         }
-      },
-      createdBy: {
-        'en-US': {
-          sys: {
-            type: 'Link',
-            linkType: 'Entry',
-            id: createdBy
-          }
-        }
-      }
+      })
+      return
     }
 
-    contentfulClient.then(environment => environment.createEntry('tab', {
-      fields: payload
-    }))
-    .then(entry => entry.publish())
-    .then(result => this.setState({loading: false, success: true}))
-    .catch(error => {
-      this.setState({loading: false, errors: JSON.parse(error.message)})
+    this.validateTab(tab.url || tab.href)
+    .then(result => {
+      if (result) {
+        this.setState({
+          loading: false,
+          error: {
+            status: 422,
+            message: 'Tab already exists',
+            details: "You've previously saved this tab",
+            value: tab.url || tab.href
+          }
+        })
+        return
+      }
+
+      retrieveUser().then(user => this.setState({ user: user[0].sys.id }))
+      this.saveTab()
     })
   }
 
   render () {
-    const { page, note, category, tab, options, loading, errors, success } = this.state
+    const { page, note, category, tab, options, loading, error, success } = this.state
   
     return (
       <React.Fragment>
@@ -131,11 +119,11 @@ class SaveTab extends Component {
           </div>
 
           <div className='save-tab-form'>
-            {errors.status ? 
+            {error.status ? 
               <Message
                 error
-                header={errors.message}
-                content={errors.details.errors[0].details + ' - "' + errors.details.errors[0].value + 'å"'}
+                header={error.message}
+                content={error.details + ' - ' + error.value}
               />:''
             }
             {success ?
@@ -170,11 +158,70 @@ class SaveTab extends Component {
           </div>
         </div>
         : (page === 'App') ? <App />
-          : (page === 'Tabs') ? <Tabs updateTabEntries={this.props.updateTabEntries} />
+          : (page === 'Tabs') ? <Tabs getFilteredEntries={this.props.getFilteredEntries} />
             :''
         }
       </React.Fragment>
     )
+  }
+
+  validateTab (tabUrl) {
+    return this.props.getFilteredEntries().then(result => {
+      return result.some(value => {
+        return value.fields.url === tabUrl
+      })
+    })
+  }
+
+  saveTab ({tab, note, category, createdBy} = this.state) {
+    const payload = {
+      title: {
+        'en-US': tab.title || 'Test Success',
+      },
+      note: {
+        'en-US': note
+      },
+      url: {
+        'en-US': tab.url || tab.href
+      },
+      tag: {
+        'en-US': {
+          sys: {
+            type: 'Link',
+            linkType: 'Entry',
+            id: category
+          }
+        }
+      },
+      createdBy: {
+        'en-US': {
+          sys: {
+            type: 'Link',
+            linkType: 'Entry',
+            id: createdBy
+          }
+        }
+      }
+    }
+
+    contentfulClient.then(environment => environment.createEntry('tab', {
+      fields: payload
+    }))
+    .then(entry => entry.publish())
+    .then(result => this.setState({loading: false, success: true}))
+    .catch(e => {
+      let error = JSON.parse(e.message)
+
+      this.setState({
+        loading: false,
+        error: {
+          status: error.message.status,
+          message: error.message.message,
+          details: error.message.details.errors[0].details,
+          value: error.message.details.errors[0].value
+        }
+      })
+    })
   }
 }
 

@@ -23,7 +23,7 @@ class Tabs extends Component {
   }
 
   invokeTabEntries () {
-    this.props.updateTabEntries().then(result => {
+    this.props.getFilteredEntries().then(result => {
       this.setState({ entries: result })
     })
   }
@@ -60,7 +60,7 @@ class Tabs extends Component {
           </div>
         </div>
           : (page === 'SaveTab')
-            ? <SaveTab updateTabEntries={this.props.updateTabEntries} user={this.props.user} />
+            ? <SaveTab getFilteredEntries={this.props.getFilteredEntries} user={this.props.user} />
             : (page === 'App')
               ? <App />
               : ''
