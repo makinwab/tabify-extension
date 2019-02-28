@@ -12,7 +12,9 @@ class Tabs extends Component {
 
     this.state = {
       entries: [],
-      page: 'Tabs'
+      page: 'Tabs',
+      searchTerm: '',
+      searchResults: []
     }
 
     this.handlePageChange = this.handlePageChange.bind(this)
@@ -24,7 +26,22 @@ class Tabs extends Component {
 
   invokeTabEntries () {
     this.props.getFilteredEntries().then(result => {
-      this.setState({ entries: result })
+      this.setState({ entries: result, searchResults: result })
+    })
+  }
+
+  handleSearch = (ev, { name, value }) => {
+    const {entries} = this.state
+
+    this.setState({
+      searchResults: this.performSearch(entries, value.toLowerCase()),
+      [name]: value
+    })
+  }
+
+  performSearch (entries, value) {
+    return entries.filter(entry => {
+      return entry.fields.title.toLowerCase().includes(value) || entry.fields.tag.fields.name.toLowerCase().includes(value)
     })
   }
 
@@ -34,7 +51,13 @@ class Tabs extends Component {
   }
 
   render () {
-    const { page } = this.state
+    const { page, searchTerm, entries, searchResults } = this.state
+    let result = entries
+
+    if (searchTerm.trim()) {
+      result = searchResults
+    }
+
     return (
       <React.Fragment>
         {(page === 'Tabs') ? <div id='Tabs' className='Tabs'>
@@ -50,12 +73,12 @@ class Tabs extends Component {
 
           <div className='tabs-main'>
             <center className='search-box'>
-              <Search size='big' />
+              <Search name='searchTerm' value={searchTerm} onSearchChange={this.handleSearch} size='big' />
             </center>
             <List relaxed>
-              {this.state.entries.map(value => {
+              {result.length > 0 ? result.map(value => {
                 return (<TabsList key={value.sys.id} createdAt={value.sys.createdAt} fields={value.fields} />)
-              })}
+              }): <h3 className='no-result'>Sorry! No Tabs Found <span role="img" aria-Label='sad'>😢</span></h3>}
             </List>
           </div>
         </div>

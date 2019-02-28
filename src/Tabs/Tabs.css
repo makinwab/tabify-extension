@@ -20,6 +20,14 @@ div.truncate-text {
     margin: 0 auto;
 }
 
+.search .results {
+  display: none !important;
+}
+
+.no-result {
+  color: white;
+  text-align: center;
+}
 
 /* Tabs Page */
 .tabs-header {
