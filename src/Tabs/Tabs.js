@@ -78,7 +78,7 @@ class Tabs extends Component {
             <List relaxed>
               {result.length > 0 ? result.map(value => {
                 return (<TabsList key={value.sys.id} createdAt={value.sys.createdAt} fields={value.fields} />)
-              }): <h3 className='no-result'>Sorry! No Tabs Found <span role="img" aria-Label='sad'>😢</span></h3>}
+              }): <h3 className='no-result'>Sorry! No Tabs Found <span role="img" aria-label='sad'>😢</span></h3>}
             </List>
           </div>
         </div>
