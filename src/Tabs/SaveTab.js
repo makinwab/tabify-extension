@@ -20,7 +20,7 @@ class SaveTab extends Component {
     this.state = {
       page: 'SaveTab',
       options: [],
-      tab: {url: 'http://abc.com'},
+      tab: {url: 'http://labc.com'},
       category: '',
       note: '',
       createdBy: '',
@@ -130,7 +130,7 @@ class SaveTab extends Component {
               header='Ready to save tab!'
               content='Fill out the fields below for the tab' />
 
-            <Form className='attached fluid segment' onSubmit={this.handleSubmit}>
+            <Form id="saveTabForm" className='attached fluid segment' onSubmit={this.handleSubmit}>
               <Form.Group widths='equal'>
                 <Form.Input fluid className='disabled-field' label='Tab Title' placeholder='Enter Tab Title' value={tab.title} disabled />
                 <Form.Select name='category' value={category} onChange={this.handleFormChange} fluid label='Tab Category' options={options} placeholder='Select Category' />
@@ -209,7 +209,11 @@ class SaveTab extends Component {
       fields: payload
     }))
     .then(entry => entry.publish())
-    .then(this.handleFeedbackState(true, 'success'))
+    .then(() => {
+      document.getElementById("saveTabForm").reset()
+      this.setState({category: '', note: ''})
+      return this.handleFeedbackState(true, 'success')
+    })
     .catch(e => {
       let error = JSON.parse(e.message)
 
