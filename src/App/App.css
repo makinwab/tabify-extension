@@ -21,6 +21,15 @@ App {
   color: white;
 }
 
+.user-form {
+  margin-bottom: 3em;
+}
+.user-form label {
+  color: white !important;
+  text-transform: capitalize !important;
+
+}
+
 .App-link {
   color: #61dafb;
 }
