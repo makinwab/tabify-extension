@@ -7,6 +7,8 @@
 
 .save-tab-form {
   text-align: center;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 div.disabled-field > div.ui.input {
@@ -15,9 +17,9 @@ div.disabled-field > div.ui.input {
 
 div.truncate-text {
   overflow: hidden;
-    text-overflow: ellipsis;
-    width: 17em;
-    margin: 0 auto;
+  text-overflow: ellipsis;
+  width: 17em;
+  margin: 0 auto;
 }
 
 .search .results {
