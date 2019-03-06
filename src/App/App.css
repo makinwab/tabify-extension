@@ -1,6 +1,7 @@
 App {
   position: relative;
 }
+
 .app-main {
   text-align: center;
 }
@@ -52,4 +53,20 @@ App {
 .app-main h4 {
   text-transform: capitalize;
   font-style: italic;
+}
+
+.save-tab-btn {
+  display: inline !important;
+  /* background-color: #000000 !important; */
+}
+
+.my-tabs-btn {
+  background-color: #123150 !important;
+  padding: 0.8em;
+  color: white !important;
+}
+
+.all-good {
+  margin: 0 auto 0.75em auto !important;
+  color: green !important;
 }
