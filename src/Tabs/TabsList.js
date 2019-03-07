@@ -1,5 +1,5 @@
 import React from 'react'
-import { List, Divider } from 'semantic-ui-react'
+import { List, Divider, Button, Icon } from 'semantic-ui-react'
 
 const TabsList = (props) => (
   <React.Fragment>
@@ -13,6 +13,24 @@ const TabsList = (props) => (
         </List.Header>
         <List.Description className='note'>{props.fields.note}</List.Description>
         <List.Description className='tab-meta'>Saved at {props.createdAt}</List.Description>
+        <br />
+        <List.Item>
+          <Button basic size='tiny' animated='vertical' color='teal'>
+            <Button.Content hidden>Edit</Button.Content>
+            <Button.Content visible>
+              <Icon name='edit' />
+            </Button.Content>
+          </Button>
+
+          &nbsp;
+
+          <Button basic size='tiny' animated='vertical' color='red'>
+            <Button.Content hidden>Remove</Button.Content>
+            <Button.Content visible>
+              <Icon name='remove' />
+            </Button.Content>
+          </Button>
+        </List.Item>
       </List.Content>
     </List.Item>
 
