@@ -32,12 +32,12 @@ div.truncate-text {
 }
 
 /* Tabs Page */
-.tabs-header {
+.page-header {
   position: relative;
   height: 5em;
 }
 
-.tabs-header .home {
+.page-header .home {
   position: absolute;
   left: 0.5em;
   top: 1em;

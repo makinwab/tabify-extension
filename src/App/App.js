@@ -119,6 +119,11 @@ class App extends Component {
       .catch(console.error)
   }
 
+  handleInputClick () {
+    const element = document.getElementById('account-form')
+    element.scrollIntoView({behavior: "smooth"})
+  }
+
   isValidEmail (email) {
     const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -142,7 +147,7 @@ class App extends Component {
             </div>
 
             <div className='app-main'>
-              <header className='App-header'>
+              <div className='App-header'>
 
                 <img src={logo} className='App-logo' alt='logo' />
                 <h1>
@@ -152,9 +157,9 @@ class App extends Component {
                 <small>Keep your browser tabs clean. Save tabs and check them out later.</small>
                 <br />
                 <br />
-                <Form onSubmit={this.handleUserSwitch} className='user-form'>
+                <Form id='account-form' onSubmit={this.handleUserSwitch} className='user-form'>
                   <Form.Group widths='equal'>
-                    <Form.Input name='email' value={email} onChange={this.handleInputChange} fluid label='Enter an email to work with' placeholder='Email'/>
+                    <Form.Input name='email' value={email} onClick={this.handleInputClick} onChange={this.handleInputChange} fluid label='Enter an email to work with' placeholder='Email'/>
                     
                     <Label className='my-tabs-btn all-good'>
                       <Icon name='check' />Success
@@ -164,7 +169,7 @@ class App extends Component {
                   <Button color='orange' basic type='submit'>Add Account</Button>
                 </Form>
                 {/* <Button  content='Save Tab' onClick={ev => this.handleSave(ev, { current: 'App', next: 'SaveTab' })} /> */}
-              </header>
+              </div>
             </div>
           </div>
           : (page === 'Tabs') ? <Tabs getFilteredEntries={this.getFilteredEntries} user={user} />

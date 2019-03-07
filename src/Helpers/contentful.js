@@ -13,10 +13,6 @@ const CMAClient = CMA.createClient({
 export const environment = CMAClient.getSpace(process.env.REACT_APP_SPACE_ID)
   .then(space => space.getEnvironment('master'))
 
-// TODO: get email from user on authentication
-// let localStorage = window.localStorage
-// localStorage.setItem('user', 'makinwa37@gmail.com')
-
 export const user = CDAClient.getEntries({ content_type: 'user' })
 export const getEntries = CDAClient.getEntries
 export const categoryEntries = CDAClient.getEntries({ content_type: 'category' })

@@ -1,19 +1,14 @@
-App {
-  position: relative;
-}
-
 .app-main {
   text-align: center;
 }
 
 .App-logo {
-  /* animation: App-logo-spin infinite 20s linear; */
-  height: 40vmin;
+  height: 30vmin;
   pointer-events: none;
 }
 
 .App-header {
-  min-height: 100vh;
+  min-height: 105vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,6 +20,7 @@ App {
 .user-form {
   margin-bottom: 3em;
 }
+
 .user-form label {
   color: white !important;
   text-transform: capitalize !important;
@@ -48,6 +44,7 @@ App {
 .tabify-logo {
   font-family: 'Courier New', Courier, monospace;
   color: #F9D873;
+  margin-bottom: 1.5em;
 }
 
 .app-main h4 {
@@ -55,9 +52,12 @@ App {
   font-style: italic;
 }
 
+#account-form {
+  margin-top: 1.5em;
+}
+
 .save-tab-btn {
   display: inline !important;
-  /* background-color: #000000 !important; */
 }
 
 .my-tabs-btn {
