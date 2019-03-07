@@ -10,8 +10,9 @@ const CMAClient = CMA.createClient({
   accessToken: process.env.REACT_APP_CMA_ACCESS_TOKEN
 })
 
-export const environment = CMAClient.getSpace(process.env.REACT_APP_SPACE_ID)
-  .then(space => space.getEnvironment('master'))
+export const CMASpace = CMAClient.getSpace(process.env.REACT_APP_SPACE_ID)
+
+export const environment = CMASpace.then(space => space.getEnvironment('master'))
 
 export const user = CDAClient.getEntries({ content_type: 'user' })
 export const getEntries = CDAClient.getEntries

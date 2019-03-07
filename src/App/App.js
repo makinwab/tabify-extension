@@ -171,7 +171,6 @@ class App extends Component {
                 {/* <Button  content='Save Tab' onClick={ev => this.handleSave(ev, { current: 'App', next: 'SaveTab' })} /> */}
               </div>
             </div>
-            <Tabs getFilteredEntries={this.getFilteredEntries} user={user} />
           </div>
           : (page === 'Tabs') ? <Tabs getFilteredEntries={this.getFilteredEntries} user={user} />
             : (page === 'SaveTab') ? <SaveTab getFilteredEntries={this.getFilteredEntries} user={user} /> : ''
