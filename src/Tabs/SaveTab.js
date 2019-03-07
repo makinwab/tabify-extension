@@ -99,7 +99,7 @@ class SaveTab extends Component {
       <React.Fragment>
         {(page === 'SaveTab') ? 
         <div id='SaveTab' className='save-tab'>
-          <div className='tabs-header'>
+          <div className='page-header'>
             <div className='menu-links'>
               <Label color='black' as='a' onClick={this.handlePageChange({ current: 'SaveTab', next: 'Tabs' })}>
                 <Icon name='linkify' />My Tabs
