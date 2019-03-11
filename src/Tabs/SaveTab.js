@@ -134,7 +134,11 @@ class SaveTab extends Component {
     })
   }
 
+<<<<<<< HEAD
   saveTab ({ tab, note, category, createdBy } = this.state) {
+=======
+  saveTab ({ tab, note, selected, createdBy } = this.state) {
+>>>>>>> implement edit feature
     const payload = {
       title: {
         'en-US': tab.title || 'Test Success'
@@ -150,7 +154,7 @@ class SaveTab extends Component {
           sys: {
             type: 'Link',
             linkType: 'Entry',
-            id: category
+            id: selected
           }
         }
       },
@@ -202,8 +206,7 @@ class SaveTab extends Component {
         entry.fields = data
         return entry.update()
       })
-      .then((entry) => entry.publish)
-      .then(entry => console.log(`Entry {entry.sys.id} published`))
+      .then(entry => entry.publish())
   }
 
   render () {
