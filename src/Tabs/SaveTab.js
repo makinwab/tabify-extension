@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Label, Icon, Form, Message } from 'semantic-ui-react'
 import { categoryEntries } from '../Helpers/contentful'
 import { getCurrentTab } from '../Helpers/extensionUtils'
-import { user, environment as contentfulClient } from '../Helpers/contentful'
+import { getEntries, user, environment as contentfulClient } from '../Helpers/contentful'
 import Tabs from '../Tabs/Tabs'
 import App from '../App/App'
 
@@ -19,8 +19,9 @@ class SaveTab extends Component {
     this.state = {
       page: 'SaveTab',
       options: [],
-      tab: {url: 'http://labc.com'},
+      tab: { url: 'http://labc.com' },
       category: '',
+      selected: '',
       note: '',
       createdBy: '',
       loading: false,
@@ -30,9 +31,26 @@ class SaveTab extends Component {
   }
 
   componentDidMount () {
-    getCurrentTab(tab => {
-      this.setState({ tab })
-    })
+    if (this.props.editableTab) {
+      getEntries({ content_type: 'tab', 'sys.id': this.props.editableTab })
+        .then(result => {
+          const tab = result.items[0].fields
+
+          this.setState({
+            tab: {
+              url: tab.url,
+              title: tab.title
+            },
+            category: tab.tag.fields.name,
+            selected: tab.tag.sys.id,
+            note: tab.note
+          })
+        })
+    } else {
+      getCurrentTab(tab => {
+        this.setState({ tab })
+      })
+    }
 
     retrieveUser().then(user => this.setState({ createdBy: user[0].sys.id }))
 
@@ -55,7 +73,11 @@ class SaveTab extends Component {
   }
 
   handleFormChange = (ev, { name, value }) => {
-    this.setState({ [name]: value })
+    let selected = this.state.selected
+    if (name === 'category') {
+      selected = value
+    }
+    this.setState({ [name]: value, selected })
   }
 
   handleSubmit = ev => {
@@ -103,16 +125,19 @@ class SaveTab extends Component {
 
   validateTab (tabUrl) {
     return this.props.getFilteredEntries().then(result => {
+      if (this.props.editableTab) {
+        return false
+      }
       return result.some(value => {
         return value.fields.url === tabUrl
       })
     })
   }
 
-  saveTab ({tab, note, category, createdBy} = this.state) {
+  saveTab ({ tab, note, category, createdBy } = this.state) {
     const payload = {
       title: {
-        'en-US': tab.title || 'Test Success',
+        'en-US': tab.title || 'Test Success'
       },
       note: {
         'en-US': note
@@ -140,87 +165,113 @@ class SaveTab extends Component {
       }
     }
 
-    contentfulClient.then(environment => environment.createEntry('tab', {
-      fields: payload
-    }))
-    .then(entry => entry.publish())
-    .then(() => {
-      document.getElementById("saveTabForm").reset()
-      this.setState({category: '', note: ''})
+    const tabToEdit = this.props.editableTab
+    let result
+
+    if (tabToEdit) {
+      result = this.updateTab(payload, tabToEdit)
+    } else {
+      result = this.createTab(payload)
+    }
+
+    result.then(() => {
+      this.setState({ category: '', note: '' })
       return this.handleFeedbackState(true, 'success')
     })
-    .catch(e => {
-      let error = JSON.parse(e.message)
+      .catch(e => {
+        let error = JSON.parse(e.message)
 
-      this.handleFeedbackState({
-        message: error.message.message,
-        details: error.message.details.errors[0].details,
-        value: error.message.details.errors[0].value
-      }, 'error')
+        this.handleFeedbackState({
+          message: error.message.message,
+          details: error.message.details.errors[0].details,
+          value: error.message.details.errors[0].value
+        }, 'error')
+      })
+  }
 
-      return
-    })
+  createTab (payload) {
+    return contentfulClient
+      .then(environment => environment.createEntry('tab', { fields: payload }))
+      .then(entry => entry.publish())
+  }
+
+  updateTab (data, tabId) {
+    return contentfulClient
+      .then((environment) => environment.getEntry(tabId))
+      .then((entry) => {
+        entry.fields = data
+        return entry.update()
+      })
+      .then((entry) => entry.publish)
+      .then(entry => console.log(`Entry {entry.sys.id} published`))
   }
 
   render () {
-    const { page, note, category, tab, options, loading, error, success } = this.state
-  
+    const { page, note, category, tab, options, loading, error, success, selected } = this.state
+
     return (
       <React.Fragment>
-        {(page === 'SaveTab') ? 
-        <div id='SaveTab' className='save-tab'>
-          <div className='page-header'>
-            <div className='menu-links'>
-              <Label color='black' as='a' onClick={this.handlePageChange({ current: 'SaveTab', next: 'Tabs' })}>
-                <Icon name='linkify' />My Tabs
-              </Label>
+        {(page === 'SaveTab')
+          ? <div id='SaveTab' className='save-tab'>
+            <div className='page-header'>
+              <div className='menu-links'>
+                <Label color='black' as='a' onClick={this.handlePageChange({ current: 'SaveTab', next: 'Tabs' })}>
+                  <Icon name='linkify' />My Tabs
+                </Label>
+              </div>
+
+              <Icon className='with-pointer' name='home' size='large' onClick={this.handlePageChange({ current: 'Tabs', next: 'App' })} />
             </div>
 
-            <Icon className='with-pointer' name='home' size='large' onClick={this.handlePageChange({ current: 'Tabs', next: 'App' })} />
-          </div>
+            <div className='save-tab-form'>
+              {error
+                ? <Message
+                  error
+                  header={error.message}
+                  content={error.details + ' - ' + error.value}
+                /> : ''
+              }
+              {success
+                ? <Message
+                  success
+                  header='Tab Saved 🎉'
+                  content="You've successfully saved a tab" />
+                : ''
+              }
+              <Message
+                attached
+                header='Ready to save tab!'
+                content='Fill out the fields below for the tab' />
 
-          <div className='save-tab-form'>
-            {error ? 
-              <Message
-                error
-                header={error.message}
-                content={error.details + ' - ' + error.value}
-              />:''
-            }
-            {success ?
-              <Message
-                success
-                header='Tab Saved 🎉'
-                content="You've successfully saved a tab" />
+              <Form id='saveTabForm' className='attached fluid segment' onSubmit={this.handleSubmit}>
+                <Form.Group widths='equal'>
+                  <Form.Input fluid className='disabled-field' label='Tab Title' placeholder='Enter Tab Title' value={tab.title} disabled />
+                  <Form.Select
+                    name='category'
+                    onChange={this.handleFormChange}
+                    value={selected || category}
+                    fluid
+                    label='Tab Category'
+                    options={options}
+                    placeholder='Select Category' />
+                </Form.Group>
+
+                <Form.TextArea name='note' value={note} onChange={this.handleFormChange} label='Note' placeholder='Leave a note regarding this tab...' />
+
+                {loading ? <Form.Button loading>Loading</Form.Button> : <Form.Button>Save</Form.Button>}
+              </Form>
+
+              <Message attached='bottom'>
+                <div className='truncate-text'>
+                  <Icon name='linkify' />
+                  <a className='with-pointer' href={tab.url} target='_blank' rel='noopener noreferrer'>{tab.url}</a>
+                </div>
+              </Message>
+            </div>
+          </div>
+          : (page === 'App') ? <App />
+            : (page === 'Tabs') ? <Tabs getFilteredEntries={this.props.getFilteredEntries} />
               : ''
-            }
-            <Message
-              attached
-              header='Ready to save tab!'
-              content='Fill out the fields below for the tab' />
-
-            <Form id="saveTabForm" className='attached fluid segment' onSubmit={this.handleSubmit}>
-              <Form.Group widths='equal'>
-                <Form.Input fluid className='disabled-field' label='Tab Title' placeholder='Enter Tab Title' value={tab.title} disabled />
-                <Form.Select name='category' value={category} onChange={this.handleFormChange} fluid label='Tab Category' options={options} placeholder='Select Category' />
-              </Form.Group>
-              
-              <Form.TextArea name='note' value={note} onChange={this.handleFormChange} label='Note' placeholder='Leave a note regarding this tab...' />
-              
-              {loading ? <Form.Button loading>Loading</Form.Button> :  <Form.Button>Save</Form.Button>}
-            </Form>
-
-            <Message attached='bottom'>
-              <div className='truncate-text'>
-                <Icon name='linkify' />
-                <a className='with-pointer' href={tab.url} target='_blank' rel='noopener noreferrer'>{tab.url}</a>
-              </div>
-            </Message>
-          </div>
-        </div>
-        : (page === 'App') ? <App />
-          : (page === 'Tabs') ? <Tabs getFilteredEntries={this.props.getFilteredEntries} />
-            :''
         }
       </React.Fragment>
     )
