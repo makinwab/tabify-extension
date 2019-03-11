@@ -59,7 +59,10 @@ div.truncate-text {
 
 .tabs-main .note, .tabs-main .list-icon {
   color: white !important;
-  line-height: 2em;
+}
+.tabs-main .note {
+  margin: 0.375em auto;
+  line-height: 1.275em;
 }
 
 .tabs-main .tab-meta {
