@@ -134,11 +134,7 @@ class SaveTab extends Component {
     })
   }
 
-<<<<<<< HEAD
-  saveTab ({ tab, note, category, createdBy } = this.state) {
-=======
   saveTab ({ tab, note, selected, createdBy } = this.state) {
->>>>>>> implement edit feature
     const payload = {
       title: {
         'en-US': tab.title || 'Test Success'
