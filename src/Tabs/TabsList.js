@@ -41,7 +41,7 @@ class TabsList extends React.Component {
             <List.Description className='tab-meta'>Saved at {this.props.entry.sys.createdAt}</List.Description>
             <br />
             <List.Item>
-              <Button basic size='tiny' animated='vertical' color='teal'>
+              <Button basic size='tiny' animated='vertical' color='teal' onClick={ev => this.props.handlePageChange(ev, { current: 'Tabs', next: 'SaveTab' }, this.props.entry.sys.id)}>
                 <Button.Content hidden>Edit</Button.Content>
                 <Button.Content visible>
                   <Icon name='edit' />

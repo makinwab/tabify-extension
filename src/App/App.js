@@ -3,13 +3,13 @@ import { Button, Icon, Label, Form } from 'semantic-ui-react'
 import Tabs from '../Tabs/Tabs'
 import SaveTab from '../Tabs/SaveTab'
 import logo from '../contentful-logo-1.png'
-import client, { getEntries, environment as contentfulClient } from '../Helpers/contentful'
+import { getEntries, environment as contentfulClient } from '../Helpers/contentful'
 
 import './App.css'
 const localStorage = window.localStorage
 
 const retrieveUser = (email = localStorage.user) => {
-  return client.CDAClient.getEntries({content_type: 'user', 'fields.email': email})
+  return getEntries({ content_type: 'user', 'fields.email': email })
 }
 
 class App extends Component {
@@ -60,7 +60,7 @@ class App extends Component {
 
   updateUserData () {
     retrieveUser().then(user => {
-      if(user.items.length > 0) {
+      if (user.items.length > 0) {
         this.setState({ user: user.items[0].sys.id })
       }
     })
@@ -121,11 +121,11 @@ class App extends Component {
 
   handleInputClick () {
     const element = document.getElementById('account-form')
-    element.scrollIntoView({behavior: "smooth"})
+    element.scrollIntoView({ behavior: 'smooth' })
   }
 
   isValidEmail (email) {
-    const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
     return regex.test(email)
   }
@@ -159,8 +159,8 @@ class App extends Component {
                 <br />
                 <Form id='account-form' onSubmit={this.handleUserSwitch} className='user-form'>
                   <Form.Group widths='equal'>
-                    <Form.Input name='email' value={email} onClick={this.handleInputClick} onChange={this.handleInputChange} fluid label='Enter an email to work with' placeholder='Email'/>
-                    
+                    <Form.Input name='email' value={email} onClick={this.handleInputClick} onChange={this.handleInputChange} fluid label='Enter an email to work with' placeholder='Email' />
+
                     <Label className='my-tabs-btn all-good'>
                       <Icon name='check' />Success
                     </Label>

@@ -14,7 +14,8 @@ class Tabs extends Component {
       entries: [],
       page: 'Tabs',
       searchTerm: '',
-      searchResults: []
+      searchResults: [],
+      editableTab: null
     }
 
     this.handlePageChange = this.handlePageChange.bind(this)
@@ -45,13 +46,17 @@ class Tabs extends Component {
     })
   }
 
-  handlePageChange (ev, page) {
+  handlePageChange (ev, page, id = null) {
     ev.preventDefault()
-    this.setState({ page: page.next })
+    if (id) {
+      this.setState({ page: page.next, editableTab: id })
+    } else {
+      this.setState({ page: page.next })
+    }
   }
 
   render () {
-    const { page, searchTerm, entries, searchResults } = this.state
+    const { page, searchTerm, entries, searchResults, editableTab } = this.state
     let result = entries
 
     if (searchTerm.trim()) {
@@ -77,13 +82,13 @@ class Tabs extends Component {
             </center>
             <List relaxed>
               {result.length > 0 ? result.map(value => {
-                return (<TabsList key={value.sys.id} entry={value} />)
-              }): <h3 className='no-result'>Sorry! No Tabs Found <span role="img" aria-label='sad'>😢</span></h3>}
+                return (<TabsList key={value.sys.id} entry={value} handlePageChange={this.handlePageChange} />)
+              }) : <h3 className='no-result'>Sorry! No Tabs Found <span role='img' aria-label='sad'>😢</span></h3>}
             </List>
           </div>
         </div>
           : (page === 'SaveTab')
-            ? <SaveTab getFilteredEntries={this.props.getFilteredEntries} user={this.props.user} />
+            ? <SaveTab getFilteredEntries={this.props.getFilteredEntries} user={this.props.user} editableTab={editableTab} />
             : (page === 'App')
               ? <App />
               : ''
