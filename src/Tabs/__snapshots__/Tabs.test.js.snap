@@ -1,0 +1,964 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders <Tabs> without crashing 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Tabs
+    getFilteredEntries={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "isThrow": false,
+            "value": Promise {},
+          },
+        ],
+      }
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "children": <div
+        className="Tabs"
+        id="Tabs"
+      >
+        <div
+          className="page-header"
+        >
+          <div
+            className="menu-links"
+          >
+            <Label
+              as="a"
+              className="with-pointer"
+              color="black"
+              onClick={[Function]}
+            >
+              <Icon
+                as="i"
+                name="add"
+              />
+               Save Tab
+            </Label>
+          </div>
+          <Icon
+            as="i"
+            className="with-pointer"
+            name="home"
+            onClick={[Function]}
+            size="large"
+          />
+        </div>
+        <div
+          className="tabs-main"
+        >
+          <center
+            className="search-box"
+          >
+            <Search
+              icon="search"
+              input="text"
+              minCharacters={1}
+              name="searchTerm"
+              noResultsMessage="No results found."
+              onSearchChange={[Function]}
+              showNoResults={true}
+              size="big"
+              value=""
+            />
+          </center>
+          <List
+            relaxed={true}
+          >
+            <h3
+              className="no-result"
+            >
+              Sorry! No Tabs Found
+               
+              <span
+                aria-label="sad"
+                role="img"
+              >
+                😢
+              </span>
+            </h3>
+          </List>
+        </div>
+      </div>,
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            className="page-header"
+          >
+            <div
+              className="menu-links"
+            >
+              <Label
+                as="a"
+                className="with-pointer"
+                color="black"
+                onClick={[Function]}
+              >
+                <Icon
+                  as="i"
+                  name="add"
+                />
+                 Save Tab
+              </Label>
+            </div>
+            <Icon
+              as="i"
+              className="with-pointer"
+              name="home"
+              onClick={[Function]}
+              size="large"
+            />
+          </div>,
+          <div
+            className="tabs-main"
+          >
+            <center
+              className="search-box"
+            >
+              <Search
+                icon="search"
+                input="text"
+                minCharacters={1}
+                name="searchTerm"
+                noResultsMessage="No results found."
+                onSearchChange={[Function]}
+                showNoResults={true}
+                size="big"
+                value=""
+              />
+            </center>
+            <List
+              relaxed={true}
+            >
+              <h3
+                className="no-result"
+              >
+                Sorry! No Tabs Found
+                 
+                <span
+                  aria-label="sad"
+                  role="img"
+                >
+                  😢
+                </span>
+              </h3>
+            </List>
+          </div>,
+        ],
+        "className": "Tabs",
+        "id": "Tabs",
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <div
+                className="menu-links"
+              >
+                <Label
+                  as="a"
+                  className="with-pointer"
+                  color="black"
+                  onClick={[Function]}
+                >
+                  <Icon
+                    as="i"
+                    name="add"
+                  />
+                   Save Tab
+                </Label>
+              </div>,
+              <Icon
+                as="i"
+                className="with-pointer"
+                name="home"
+                onClick={[Function]}
+                size="large"
+              />,
+            ],
+            "className": "page-header",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Label
+                  as="a"
+                  className="with-pointer"
+                  color="black"
+                  onClick={[Function]}
+                >
+                  <Icon
+                    as="i"
+                    name="add"
+                  />
+                   Save Tab
+                </Label>,
+                "className": "menu-links",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "as": "a",
+                  "children": Array [
+                    <Icon
+                      as="i"
+                      name="add"
+                    />,
+                    " Save Tab",
+                  ],
+                  "className": "with-pointer",
+                  "color": "black",
+                  "onClick": [Function],
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "as": "i",
+                      "name": "add",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  " Save Tab",
+                ],
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "as": "i",
+                "className": "with-pointer",
+                "name": "home",
+                "onClick": [Function],
+                "size": "large",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+          ],
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <center
+                className="search-box"
+              >
+                <Search
+                  icon="search"
+                  input="text"
+                  minCharacters={1}
+                  name="searchTerm"
+                  noResultsMessage="No results found."
+                  onSearchChange={[Function]}
+                  showNoResults={true}
+                  size="big"
+                  value=""
+                />
+              </center>,
+              <List
+                relaxed={true}
+              >
+                <h3
+                  className="no-result"
+                >
+                  Sorry! No Tabs Found
+                   
+                  <span
+                    aria-label="sad"
+                    role="img"
+                  >
+                    😢
+                  </span>
+                </h3>
+              </List>,
+            ],
+            "className": "tabs-main",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Search
+                  icon="search"
+                  input="text"
+                  minCharacters={1}
+                  name="searchTerm"
+                  noResultsMessage="No results found."
+                  onSearchChange={[Function]}
+                  showNoResults={true}
+                  size="big"
+                  value=""
+                />,
+                "className": "search-box",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "icon": "search",
+                  "input": "text",
+                  "minCharacters": 1,
+                  "name": "searchTerm",
+                  "noResultsMessage": "No results found.",
+                  "onSearchChange": [Function],
+                  "showNoResults": true,
+                  "size": "big",
+                  "value": "",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": "center",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <h3
+                  className="no-result"
+                >
+                  Sorry! No Tabs Found
+                   
+                  <span
+                    aria-label="sad"
+                    role="img"
+                  >
+                    😢
+                  </span>
+                </h3>,
+                "relaxed": true,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    "Sorry! No Tabs Found",
+                    " ",
+                    <span
+                      aria-label="sad"
+                      role="img"
+                    >
+                      😢
+                    </span>,
+                  ],
+                  "className": "no-result",
+                },
+                "ref": null,
+                "rendered": Array [
+                  "Sorry! No Tabs Found",
+                  " ",
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "aria-label": "sad",
+                      "children": "😢",
+                      "role": "img",
+                    },
+                    "ref": null,
+                    "rendered": "😢",
+                    "type": "span",
+                  },
+                ],
+                "type": "h3",
+              },
+              "type": [Function],
+            },
+          ],
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+    "type": Symbol(react.fragment),
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": <div
+          className="Tabs"
+          id="Tabs"
+        >
+          <div
+            className="page-header"
+          >
+            <div
+              className="menu-links"
+            >
+              <Label
+                as="a"
+                className="with-pointer"
+                color="black"
+                onClick={[Function]}
+              >
+                <Icon
+                  as="i"
+                  name="add"
+                />
+                 Save Tab
+              </Label>
+            </div>
+            <Icon
+              as="i"
+              className="with-pointer"
+              name="home"
+              onClick={[Function]}
+              size="large"
+            />
+          </div>
+          <div
+            className="tabs-main"
+          >
+            <center
+              className="search-box"
+            >
+              <Search
+                icon="search"
+                input="text"
+                minCharacters={1}
+                name="searchTerm"
+                noResultsMessage="No results found."
+                onSearchChange={[Function]}
+                showNoResults={true}
+                size="big"
+                value=""
+              />
+            </center>
+            <List
+              relaxed={true}
+            >
+              <h3
+                className="no-result"
+              >
+                Sorry! No Tabs Found
+                 
+                <span
+                  aria-label="sad"
+                  role="img"
+                >
+                  😢
+                </span>
+              </h3>
+            </List>
+          </div>
+        </div>,
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <div
+              className="page-header"
+            >
+              <div
+                className="menu-links"
+              >
+                <Label
+                  as="a"
+                  className="with-pointer"
+                  color="black"
+                  onClick={[Function]}
+                >
+                  <Icon
+                    as="i"
+                    name="add"
+                  />
+                   Save Tab
+                </Label>
+              </div>
+              <Icon
+                as="i"
+                className="with-pointer"
+                name="home"
+                onClick={[Function]}
+                size="large"
+              />
+            </div>,
+            <div
+              className="tabs-main"
+            >
+              <center
+                className="search-box"
+              >
+                <Search
+                  icon="search"
+                  input="text"
+                  minCharacters={1}
+                  name="searchTerm"
+                  noResultsMessage="No results found."
+                  onSearchChange={[Function]}
+                  showNoResults={true}
+                  size="big"
+                  value=""
+                />
+              </center>
+              <List
+                relaxed={true}
+              >
+                <h3
+                  className="no-result"
+                >
+                  Sorry! No Tabs Found
+                   
+                  <span
+                    aria-label="sad"
+                    role="img"
+                  >
+                    😢
+                  </span>
+                </h3>
+              </List>
+            </div>,
+          ],
+          "className": "Tabs",
+          "id": "Tabs",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <div
+                  className="menu-links"
+                >
+                  <Label
+                    as="a"
+                    className="with-pointer"
+                    color="black"
+                    onClick={[Function]}
+                  >
+                    <Icon
+                      as="i"
+                      name="add"
+                    />
+                     Save Tab
+                  </Label>
+                </div>,
+                <Icon
+                  as="i"
+                  className="with-pointer"
+                  name="home"
+                  onClick={[Function]}
+                  size="large"
+                />,
+              ],
+              "className": "page-header",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <Label
+                    as="a"
+                    className="with-pointer"
+                    color="black"
+                    onClick={[Function]}
+                  >
+                    <Icon
+                      as="i"
+                      name="add"
+                    />
+                     Save Tab
+                  </Label>,
+                  "className": "menu-links",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "as": "a",
+                    "children": Array [
+                      <Icon
+                        as="i"
+                        name="add"
+                      />,
+                      " Save Tab",
+                    ],
+                    "className": "with-pointer",
+                    "color": "black",
+                    "onClick": [Function],
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "as": "i",
+                        "name": "add",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    " Save Tab",
+                  ],
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "as": "i",
+                  "className": "with-pointer",
+                  "name": "home",
+                  "onClick": [Function],
+                  "size": "large",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+            ],
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <center
+                  className="search-box"
+                >
+                  <Search
+                    icon="search"
+                    input="text"
+                    minCharacters={1}
+                    name="searchTerm"
+                    noResultsMessage="No results found."
+                    onSearchChange={[Function]}
+                    showNoResults={true}
+                    size="big"
+                    value=""
+                  />
+                </center>,
+                <List
+                  relaxed={true}
+                >
+                  <h3
+                    className="no-result"
+                  >
+                    Sorry! No Tabs Found
+                     
+                    <span
+                      aria-label="sad"
+                      role="img"
+                    >
+                      😢
+                    </span>
+                  </h3>
+                </List>,
+              ],
+              "className": "tabs-main",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <Search
+                    icon="search"
+                    input="text"
+                    minCharacters={1}
+                    name="searchTerm"
+                    noResultsMessage="No results found."
+                    onSearchChange={[Function]}
+                    showNoResults={true}
+                    size="big"
+                    value=""
+                  />,
+                  "className": "search-box",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "icon": "search",
+                    "input": "text",
+                    "minCharacters": 1,
+                    "name": "searchTerm",
+                    "noResultsMessage": "No results found.",
+                    "onSearchChange": [Function],
+                    "showNoResults": true,
+                    "size": "big",
+                    "value": "",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": "center",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <h3
+                    className="no-result"
+                  >
+                    Sorry! No Tabs Found
+                     
+                    <span
+                      aria-label="sad"
+                      role="img"
+                    >
+                      😢
+                    </span>
+                  </h3>,
+                  "relaxed": true,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      "Sorry! No Tabs Found",
+                      " ",
+                      <span
+                        aria-label="sad"
+                        role="img"
+                      >
+                        😢
+                      </span>,
+                    ],
+                    "className": "no-result",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    "Sorry! No Tabs Found",
+                    " ",
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "aria-label": "sad",
+                        "children": "😢",
+                        "role": "img",
+                      },
+                      "ref": null,
+                      "rendered": "😢",
+                      "type": "span",
+                    },
+                  ],
+                  "type": "h3",
+                },
+                "type": [Function],
+              },
+            ],
+            "type": "div",
+          },
+        ],
+        "type": "div",
+      },
+      "type": Symbol(react.fragment),
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+  },
+  Symbol(enzyme.__childContext__): null,
+}
+`;
+
+exports[`renders <TabsList> without crashing 1`] = `
+Array [
+  <div
+    className="item"
+    id={1}
+    onClick={[Function]}
+    role="listitem"
+  >
+    <i
+      aria-hidden="true"
+      className="linkify large icon middle aligned list-icon"
+      onClick={[Function]}
+    />
+    <div
+      className="content"
+    >
+      <div
+        className="header"
+      >
+        <a
+          href="http://abc.com"
+          rel="noopener noreferrer"
+          target="_blank"
+        />
+        <span
+          className="tabs-tag"
+        >
+           
+          ( #
+          test
+           )
+        </span>
+      </div>
+      <div
+        className="note description"
+      />
+      <div
+        className="tab-meta description"
+      >
+        Saved at 
+      </div>
+      <br />
+      <div
+        className="item"
+        onClick={[Function]}
+        role="listitem"
+      >
+        <button
+          className="ui teal tiny basic vertical animated button"
+          onClick={[Function]}
+        >
+          <div
+            className="hidden content"
+          >
+            Edit
+          </div>
+          <div
+            className="visible content"
+          >
+            <i
+              aria-hidden="true"
+              className="edit icon"
+              onClick={[Function]}
+            />
+          </div>
+        </button>
+         
+        <button
+          className="ui red tiny basic vertical animated button"
+          data-entry-id={1}
+          id="test-button"
+          onClick={[Function]}
+        >
+          <div
+            className="hidden content"
+          >
+            Remove
+          </div>
+          <div
+            className="visible content"
+          >
+            <i
+              aria-hidden="true"
+              className="remove icon"
+              onClick={[Function]}
+            />
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>,
+  <div
+    className="ui divider"
+  />,
+]
+`;

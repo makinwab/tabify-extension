@@ -1,19 +1,19 @@
-import React, { Component } from 'react'
-import { Search, List, Label, Icon } from 'semantic-ui-react'
-import TabsList from './TabsList'
-import SaveTab from './SaveTab'
-import App from '../App/App'
+import React, { Component } from "react"
+import { Search, List, Label, Icon } from "semantic-ui-react"
+import TabsList from "./TabsList"
+import SaveTab from "./SaveTab"
+import App from "../App/App"
 
-import './Tabs.css'
+import "./Tabs.css"
 
 class Tabs extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
       entries: [],
-      page: 'Tabs',
-      searchTerm: '',
+      page: "Tabs",
+      searchTerm: "",
       searchResults: [],
       editableTab: null
     }
@@ -21,18 +21,18 @@ class Tabs extends Component {
     this.handlePageChange = this.handlePageChange.bind(this)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.invokeTabEntries()
   }
 
-  invokeTabEntries () {
+  invokeTabEntries() {
     this.props.getFilteredEntries().then(result => {
       this.setState({ entries: result, searchResults: result })
     })
   }
 
   handleSearch = (ev, { name, value }) => {
-    const {entries} = this.state
+    const { entries } = this.state
 
     this.setState({
       searchResults: this.performSearch(entries, value.toLowerCase()),
@@ -40,13 +40,16 @@ class Tabs extends Component {
     })
   }
 
-  performSearch (entries, value) {
+  performSearch(entries, value) {
     return entries.filter(entry => {
-      return entry.fields.title.toLowerCase().includes(value) || entry.fields.tag.fields.name.toLowerCase().includes(value)
+      return (
+        entry.fields.title.toLowerCase().includes(value) ||
+        entry.fields.tag.fields.name.toLowerCase().includes(value)
+      )
     })
   }
 
-  handlePageChange (ev, page, id = null) {
+  handlePageChange(ev, page, id = null) {
     ev.preventDefault()
     if (id) {
       this.setState({ page: page.next, editableTab: id })
@@ -55,7 +58,7 @@ class Tabs extends Component {
     }
   }
 
-  render () {
+  render() {
     const { page, searchTerm, entries, searchResults, editableTab } = this.state
     let result = entries
 
@@ -65,34 +68,77 @@ class Tabs extends Component {
 
     return (
       <React.Fragment>
-        {(page === 'Tabs') ? <div id='Tabs' className='Tabs'>
-          <div className='page-header'>
-            <div className='menu-links'>
-              <Label color='black' as='a' className='with-pointer' onClick={ev => this.handlePageChange(ev, { current: 'Tabs', next: 'SaveTab' })}>
-                <Icon name='add' /> Save Tab
-              </Label>
+        {page === "Tabs" ? (
+          <div id="Tabs" className="Tabs">
+            <div className="page-header">
+              <div className="menu-links">
+                <Label
+                  color="black"
+                  as="a"
+                  className="with-pointer"
+                  onClick={ev =>
+                    this.handlePageChange(ev, {
+                      current: "Tabs",
+                      next: "SaveTab"
+                    })
+                  }
+                >
+                  <Icon name="add" /> Save Tab
+                </Label>
+              </div>
+
+              <Icon
+                className="with-pointer"
+                name="home"
+                size="large"
+                onClick={ev =>
+                  this.handlePageChange(ev, { current: "Tabs", next: "App" })
+                }
+              />
             </div>
 
-            <Icon className='with-pointer' name='home' size='large' onClick={ev => this.handlePageChange(ev, { current: 'Tabs', next: 'App' })} />
+            <div className="tabs-main">
+              <center className="search-box">
+                <Search
+                  name="searchTerm"
+                  value={searchTerm}
+                  onSearchChange={this.handleSearch}
+                  size="big"
+                />
+              </center>
+              <List relaxed>
+                {result.length > 0 ? (
+                  result.map(value => {
+                    return (
+                      <TabsList
+                        key={value.sys.id}
+                        entry={value}
+                        handlePageChange={this.handlePageChange}
+                      />
+                    )
+                  })
+                ) : (
+                  <h3 className="no-result">
+                    Sorry! No Tabs Found{" "}
+                    <span role="img" aria-label="sad">
+                      😢
+                    </span>
+                  </h3>
+                )}
+              </List>
+            </div>
           </div>
-
-          <div className='tabs-main'>
-            <center className='search-box'>
-              <Search name='searchTerm' value={searchTerm} onSearchChange={this.handleSearch} size='big' />
-            </center>
-            <List relaxed>
-              {result.length > 0 ? result.map(value => {
-                return (<TabsList key={value.sys.id} entry={value} handlePageChange={this.handlePageChange} />)
-              }) : <h3 className='no-result'>Sorry! No Tabs Found <span role='img' aria-label='sad'>😢</span></h3>}
-            </List>
-          </div>
-        </div>
-          : (page === 'SaveTab')
-            ? <SaveTab getFilteredEntries={this.props.getFilteredEntries} user={this.props.user} editableTab={editableTab} />
-            : (page === 'App')
-              ? <App />
-              : ''
-        }
+        ) : page === "SaveTab" ? (
+          <SaveTab
+            getFilteredEntries={this.props.getFilteredEntries}
+            user={this.props.user}
+            editableTab={editableTab}
+          />
+        ) : page === "App" ? (
+          <App />
+        ) : (
+          ""
+        )}
       </React.Fragment>
     )
   }
