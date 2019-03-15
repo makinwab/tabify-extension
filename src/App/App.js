@@ -19,7 +19,8 @@ class App extends Component {
     this.state = {
       page: 'App',
       user: '',
-      email: ''
+      email: '',
+      messageTimeout: ''
     }
 
     this.handlePageChange = this.handlePageChange.bind(this)
@@ -114,7 +115,8 @@ class App extends Component {
         document.querySelector('.save-tab-btn').style.display = 'block'
         document.querySelector('div.menu-links').style.display = 'block'
         document.querySelector('div.all-good').style.display = 'block'
-        setTimeout(() => document.querySelector('div.all-good').style.display = 'none', 5000)
+        
+        this.setState({messageTimeout: setTimeout(() => document.querySelector('div.all-good').style.display = 'none', 5000)})
       })
       .catch(console.error)
   }
@@ -131,7 +133,7 @@ class App extends Component {
   }
 
   render () {
-    const { user, page, email } = this.state
+    const { user, page, email, messageTimeout } = this.state
 
     return (
       <div>
@@ -172,8 +174,8 @@ class App extends Component {
               </div>
             </div>
           </div>
-          : (page === 'Tabs') ? <Tabs getFilteredEntries={this.getFilteredEntries} user={user} />
-            : (page === 'SaveTab') ? <SaveTab getFilteredEntries={this.getFilteredEntries} user={user} /> : ''
+          : (page === 'Tabs') ? <Tabs messageTimeout = {messageTimeout} getFilteredEntries={this.getFilteredEntries} user={user} />
+            : (page === 'SaveTab') ? <SaveTab messageTimeout = {messageTimeout} getFilteredEntries={this.getFilteredEntries} user={user} /> : ''
         }
       </div>
     )

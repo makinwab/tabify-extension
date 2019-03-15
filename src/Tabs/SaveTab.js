@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
-import { Label, Icon, Form, Message } from 'semantic-ui-react'
+import { Label, Icon, Form, Message, Checkbox } from 'semantic-ui-react'
 import { categoryEntries } from '../Helpers/contentful'
-import { getCurrentTab } from '../Helpers/extensionUtils'
-import { getEntries, user, environment as contentfulClient } from '../Helpers/contentful'
+import { getCurrentTab, removeCurrentTab } from '../Helpers/extensionUtils'
+import client, { getEntries, environment as contentfulClient } from '../Helpers/contentful'
 import Tabs from '../Tabs/Tabs'
 import App from '../App/App'
 
-const localStorage = window.localStorage
-
 const retrieveUser = () => {
-  return user.then(entry => entry.items.filter(value => value.fields.email === localStorage.getItem('user')))
+  return client.CDAClient.getEntries({ content_type: 'user', 'fields.email': localStorage.user })
 }
 
 class SaveTab extends Component {
@@ -19,7 +17,8 @@ class SaveTab extends Component {
     this.state = {
       page: 'SaveTab',
       options: [],
-      tab: { url: 'http://labc.com' },
+      tab: {},
+      title: '',
       category: '',
       selected: '',
       note: '',
@@ -31,6 +30,11 @@ class SaveTab extends Component {
   }
 
   componentDidMount () {
+    // Clear timeout from App component
+    clearTimeout(this.props.messageTimeout)
+
+    // If action is to edit, use already saved tab information
+    // else get the browser's current tab
     if (this.props.editableTab) {
       getEntries({ content_type: 'tab', 'sys.id': this.props.editableTab })
         .then(result => {
@@ -38,9 +42,9 @@ class SaveTab extends Component {
 
           this.setState({
             tab: {
-              url: tab.url,
-              title: tab.title
+              url: tab.url
             },
+            title: tab.title,
             category: tab.tag.fields.name,
             selected: tab.tag.sys.id,
             note: tab.note
@@ -48,12 +52,19 @@ class SaveTab extends Component {
         })
     } else {
       getCurrentTab(tab => {
-        this.setState({ tab })
+        this.setState({ tab, title: tab.title || tab.hostname })
       })
     }
 
-    retrieveUser().then(user => this.setState({ createdBy: user[0].sys.id }))
+    // Get current user and set state accordingly
+    retrieveUser().then(result => {
+      return this.setState({
+        createdBy: result.items[0].sys.id ,
+        closeTab: result.items[0].fields.closeTabOnSave
+      })
+    })
 
+    // Get all categories for the dropdown
     categoryEntries.then(result => {
       let options = result.items.map((value, index) => {
         return {
@@ -83,9 +94,19 @@ class SaveTab extends Component {
   handleSubmit = ev => {
     ev.preventDefault()
 
-    const { category, tab } = this.state
+    const { category, tab, title } = this.state
 
     this.setState({ loading: true })
+
+    if (!title) {
+      this.handleFeedbackState({
+        message: 'Title is missing',
+        details: "Please add a title",
+        value: '👇🏽'
+      }, 'error')
+
+      return
+    }
 
     if (!category) {
       this.handleFeedbackState({
@@ -96,6 +117,7 @@ class SaveTab extends Component {
 
       return
     }
+
 
     this.validateTab(tab.url || tab.href)
     .then(result => {
@@ -109,7 +131,7 @@ class SaveTab extends Component {
         return
       }
 
-      retrieveUser().then(user => this.setState({ user: user[0].sys.id }))
+      retrieveUser().then(result => this.setState({ user: result.items[0].sys.id }))
       this.saveTab()
     })
   }
@@ -134,10 +156,10 @@ class SaveTab extends Component {
     })
   }
 
-  saveTab ({ tab, note, selected, createdBy } = this.state) {
+  saveTab ({ tab, note, selected, createdBy, title } = this.state) {
     const payload = {
       title: {
-        'en-US': tab.title || 'Test Success'
+        'en-US': title
       },
       note: {
         'en-US': note
@@ -193,6 +215,11 @@ class SaveTab extends Component {
     return contentfulClient
       .then(environment => environment.createEntry('tab', { fields: payload }))
       .then(entry => entry.publish())
+      .then(() => {
+        if (this.state.closeTab) {
+          removeCurrentTab()
+        }
+      })
   }
 
   updateTab (data, tabId) {
@@ -205,8 +232,12 @@ class SaveTab extends Component {
       .then(entry => entry.publish())
   }
 
+  toggleCheck = () => {
+    this.setState({closeTab: !this.state.closeTab})
+  }
+
   render () {
-    const { page, note, category, tab, options, loading, error, success, selected } = this.state
+    const { page, note, category, tab, options, loading, error, success, selected, closeTab, title } = this.state
 
     return (
       <React.Fragment>
@@ -244,7 +275,7 @@ class SaveTab extends Component {
 
               <Form id='saveTabForm' className='attached fluid segment' onSubmit={this.handleSubmit}>
                 <Form.Group widths='equal'>
-                  <Form.Input fluid className='disabled-field' label='Tab Title' placeholder='Enter Tab Title' value={tab.title} disabled />
+                  <Form.Input fluid className='disabled-field' label='Tab Title' onChange={this.handleFormChange} placeholder='Enter Tab Title' name='title' value={title} />
                   <Form.Select
                     name='category'
                     onChange={this.handleFormChange}
@@ -256,6 +287,12 @@ class SaveTab extends Component {
                 </Form.Group>
 
                 <Form.TextArea name='note' value={note} onChange={this.handleFormChange} label='Note' placeholder='Leave a note regarding this tab...' />
+
+                {this.props.editableTab ? '' : 
+                  <Form.Field>
+                    <Checkbox className='close-tab' toggle label='CLOSE TAB ON SAVE' checked={closeTab} onChange={this.toggleCheck}/>
+                  </Form.Field>
+                }
 
                 {loading ? <Form.Button loading>Loading</Form.Button> : <Form.Button>Save</Form.Button>}
               </Form>

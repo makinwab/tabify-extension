@@ -22,6 +22,10 @@ class Tabs extends Component {
   }
 
   componentDidMount () {
+    // Clear timeout from App component
+    clearTimeout(this.props.messageTimeout)
+  
+    // Get all saved tabs
     this.invokeTabEntries()
   }
 

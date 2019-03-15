@@ -31,6 +31,11 @@ div.truncate-text {
   text-align: center;
 }
 
+.close-tab {
+  font-weight: 600;
+  margin: 0.5em auto;
+}
+
 /* Tabs Page */
 .page-header {
   position: relative;
