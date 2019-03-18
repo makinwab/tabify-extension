@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Label, Icon, Form, Message, Checkbox } from 'semantic-ui-react'
-import { categoryEntries } from '../Helpers/contentful'
 import { getCurrentTab, removeCurrentTab } from '../Helpers/extensionUtils'
-import client, { getEntries, environment as contentfulClient } from '../Helpers/contentful'
+import client, { getEntries, categoryEntries, environment as contentfulClient } from '../Helpers/contentful'
 import Tabs from '../Tabs/Tabs'
 import App from '../App/App'
 
@@ -196,10 +195,14 @@ class SaveTab extends Component {
       result = this.createTab(payload)
     }
 
-    result.then(() => {
-      this.setState({ category: '', note: '' })
-      return this.handleFeedbackState(true, 'success')
-    })
+    result
+      .then(() => {
+        this.updateOnSaveTabStatus(this.state)
+          .then(() => {
+            this.setState({ category: '', note: '' })
+            return this.handleFeedbackState(true, 'success')
+          })
+      })
       .catch(e => {
         let error = JSON.parse(e.message)
 
@@ -224,8 +227,27 @@ class SaveTab extends Component {
 
   updateTab (data, tabId) {
     return contentfulClient
-      .then((environment) => environment.getEntry(tabId))
-      .then((entry) => {
+      .then(environment => environment.getEntry(tabId))
+      .then(entry => {
+        entry.fields = data
+        return entry.update()
+      })
+      .then(entry => entry.publish())
+  }
+
+  updateOnSaveTabStatus({ closeTab, user: userId}) {
+    const data = {
+      email: {
+        'en-US': localStorage.user
+      },
+      closeTabOnSave: {
+        'en-US': closeTab
+      }
+    }
+    
+    return contentfulClient
+      .then(environment => environment.getEntry(userId))
+      .then(entry => {
         entry.fields = data
         return entry.update()
       })
