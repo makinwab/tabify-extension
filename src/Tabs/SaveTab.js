@@ -198,9 +198,14 @@ class SaveTab extends Component {
     result
       .then(() => {
         this.updateOnSaveTabStatus(this.state)
-          .then(() => {
+          .then((result) => {
             this.setState({ category: '', note: '' })
             return this.handleFeedbackState(true, 'success')
+          })
+          .then(() => {
+            if (this.state.closeTab) {
+              removeCurrentTab()
+            }
           })
       })
       .catch(e => {
@@ -218,11 +223,6 @@ class SaveTab extends Component {
     return contentfulClient
       .then(environment => environment.createEntry('tab', { fields: payload }))
       .then(entry => entry.publish())
-      .then(() => {
-        if (this.state.closeTab) {
-          removeCurrentTab()
-        }
-      })
   }
 
   updateTab (data, tabId) {
