@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Search, List, Label, Icon } from 'semantic-ui-react'
+import { Search, List, Label, Icon, Header } from 'semantic-ui-react'
 import TabsList from './TabsList'
 import SaveTab from './SaveTab'
 import App from '../App/App'
@@ -84,6 +84,7 @@ class Tabs extends Component {
             <center className='search-box'>
               <Search name='searchTerm' value={searchTerm} onSearchChange={this.handleSearch} size='big' />
             </center>
+            <Header as='h5' color='grey' inverted textAlign='right'>{result.length} Tab{result.length > 1 ? 's' : ''} Saved</Header>
             <List relaxed>
               {result.length > 0 ? result.map(value => {
                 return (<TabsList key={value.sys.id} entry={value} handlePageChange={this.handlePageChange} />)
