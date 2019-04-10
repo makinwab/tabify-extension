@@ -203,7 +203,7 @@ class SaveTab extends Component {
             return this.handleFeedbackState(true, 'success')
           })
           .then(() => {
-            if (this.state.closeTab) {
+            if (this.state.closeTab && !this.props.editableTab) {
               removeCurrentTab()
             }
           })
