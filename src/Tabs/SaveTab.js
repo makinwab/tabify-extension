@@ -211,11 +211,19 @@ class SaveTab extends Component {
       .catch(e => {
         let error = JSON.parse(e.message)
 
-        this.handleFeedbackState({
-          message: error.message.message,
-          details: error.message.details.errors[0].details,
-          value: error.message.details.errors[0].value
-        }, 'error')
+        if (error.status === 500) {
+          this.handleFeedbackState({
+            message: 'Internal Server Error',
+            details: 'Please try this action again later',
+            value: ''
+          }, 'error')
+        } else {
+          this.handleFeedbackState({
+            message: error.message.message,
+            details: error.message.details.errors[0].details,
+            value: error.message.details.errors[0].value
+          }, 'error')
+        }
       })
   }
 

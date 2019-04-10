@@ -6,9 +6,11 @@ class TabsList extends React.Component {
   constructor (props) {
     super(props)
     this.state = {}
+    this.handleRemove = this.handleRemove.bind(this)
   }
 
-  handleRemove (ev) {
+  handleRemove = (ev) => {
+    this.props.handleLoader(true)
     ev.preventDefault()
     let entryId = ev.currentTarget.dataset.entryId
 
@@ -21,7 +23,10 @@ class TabsList extends React.Component {
 
         tabElement.nextElementSibling.remove()
         tabElement.remove()
-        window.alert('Tab removed')
+
+        this.props.handleRemovedTab()
+        this.props.handleLoader(false)
+        
       })
       .catch(console.error)
   }

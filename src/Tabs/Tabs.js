@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Search, List, Label, Icon, Header } from 'semantic-ui-react'
+import { Search, List, Label, Icon, Header, Message, Loader } from 'semantic-ui-react'
 import TabsList from './TabsList'
 import SaveTab from './SaveTab'
 import App from '../App/App'
@@ -15,10 +15,14 @@ class Tabs extends Component {
       page: 'Tabs',
       searchTerm: '',
       searchResults: [],
-      editableTab: null
+      editableTab: null,
+      tabRemoved: false,
+      loader: false
     }
 
     this.handlePageChange = this.handlePageChange.bind(this)
+    this.handleRemovedTab = this.handleRemovedTab.bind(this)
+    this.handleLoader = this.handleLoader.bind(this)
   }
 
   componentDidMount () {
@@ -31,15 +35,17 @@ class Tabs extends Component {
 
   invokeTabEntries () {
     this.props.getFilteredEntries().then(result => {
-      this.setState({ entries: result, searchResults: result })
+      this.setState({ entries: result, searchResults: result, count: result.length })
     })
   }
 
   handleSearch = (ev, { name, value }) => {
     const {entries} = this.state
+    const result = this.performSearch(entries, value.toLowerCase())
 
     this.setState({
-      searchResults: this.performSearch(entries, value.toLowerCase()),
+      searchResults: result,
+      count: result.length,
       [name]: value
     })
   }
@@ -59,8 +65,21 @@ class Tabs extends Component {
     }
   }
 
+  handleRemovedTab = () => {
+    let {count} = this.state
+    this.setState({count: count - 1, action: 'remove'})
+
+    setTimeout(() => {
+      this.setState({action: null})
+    }, 5000)
+  }
+
+  handleLoader = (loader) => {
+    this.setState({ loader })
+  }
+
   render () {
-    const { page, searchTerm, entries, searchResults, editableTab } = this.state
+    const { page, searchTerm, entries, searchResults, editableTab, count, action, loader } = this.state
     let result = entries
 
     if (searchTerm.trim()) {
@@ -84,12 +103,29 @@ class Tabs extends Component {
             <center className='search-box'>
               <Search name='searchTerm' value={searchTerm} onSearchChange={this.handleSearch} size='big' />
             </center>
-            <Header as='h5' color='grey' inverted textAlign='right'>{result.length} Tab{result.length > 1 ? 's' : ''} Saved</Header>
+
+            {action ? <Message
+              success
+              header='Successful Action!'
+              content='Tab has been successfully removed'
+            /> : ''}
+
+            <Header as='h5' color='grey' inverted textAlign='right'>{count} Tab{count > 1 ? 's' : ''} Saved</Header>
+
+            {loader ? <Loader inverted active inline='centered' size='small'>Removing Tab...</Loader> : ''}
+
             <List relaxed>
-              {result.length > 0 ? result.map(value => {
-                return (<TabsList key={value.sys.id} entry={value} handlePageChange={this.handlePageChange} />)
-              }) : <h3 className='no-result'>Sorry! No Tabs Found <span role='img' aria-label='sad'>😢</span></h3>}
-            </List>
+                {result.length > 0 ? result.map(value => {
+                  return (
+                    <TabsList
+                      key={value.sys.id}
+                      entry={value}
+                      handlePageChange={this.handlePageChange}
+                      handleRemovedTab={this.handleRemovedTab} 
+                      handleLoader={this.handleLoader}
+                    />)
+                }) : <h3 className='no-result'>Sorry! No Tabs Found <span role='img' aria-label='sad'>😢</span></h3>}
+              </List>
           </div>
         </div>
           : (page === 'SaveTab')
