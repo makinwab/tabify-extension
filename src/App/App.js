@@ -170,7 +170,6 @@ class App extends Component {
 
                   <Button color='orange' basic type='submit'>Add Account</Button>
                 </Form>
-                {/* <Button  content='Save Tab' onClick={ev => this.handleSave(ev, { current: 'App', next: 'SaveTab' })} /> */}
               </div>
             </div>
           </div>
