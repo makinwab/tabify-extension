@@ -6,7 +6,7 @@
     "@reach/router": "^1.2.1",
     "contentful": "^7.8.1",
     "contentful-management": "^5.9.0",
-    "history": "^4.7.2",
+    "history": "^4.10.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.3",
     "react-scripts": "2.1.5",
