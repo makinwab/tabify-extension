@@ -7,7 +7,7 @@
     "contentful": "^7.8.1",
     "contentful-management": "^5.9.0",
     "history": "^4.7.2",
-    "react": "^16.8.6",
+    "react": "^16.10.1",
     "react-dom": "^16.8.3",
     "react-scripts": "2.1.5",
     "semantic-ui-css": "^2.4.1",
