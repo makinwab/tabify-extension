@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@reach/router": "^1.2.1",
-    "contentful": "^7.10.0",
+    "contentful": "^7.14.8",
     "contentful-management": "^5.9.0",
     "history": "^4.10.1",
     "react": "^16.8.6",
