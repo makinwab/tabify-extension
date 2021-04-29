@@ -1,0 +1,47 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: contentful-management
+    versions:
+    - 7.10.0
+    - 7.11.0
+    - 7.13.0
+    - 7.13.1
+    - 7.14.0
+    - 7.14.1
+    - 7.15.0
+    - 7.15.2
+    - 7.16.0
+    - 7.5.3
+    - 7.5.4
+    - 7.6.0
+    - 7.7.0
+    - 7.8.0
+    - 7.9.0
+  - dependency-name: contentful
+    versions:
+    - 8.1.7
+    - 8.1.8
+    - 8.1.9
+    - 8.2.0
+    - 8.2.1
+    - 8.3.0
+  - dependency-name: react-scripts
+    versions:
+    - 4.0.1
+    - 4.0.2
+  - dependency-name: elliptic
+    versions:
+    - 6.5.3
+  - dependency-name: jquery
+    versions:
+    - 3.5.1
+  - dependency-name: handlebars
+    versions:
+    - 4.7.6
